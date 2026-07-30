@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, type CSSProperties } from "react";
 import clsx from "clsx";
 
 type PageProps = {
@@ -6,12 +6,20 @@ type PageProps = {
   className?: string;
   pageNumber?: number;
   variant?: "paper" | "cover";
+  accent?: string;
 };
 
 const Page = forwardRef<HTMLDivElement, PageProps>(function Page(
-  { children, className, pageNumber, variant = "paper" },
+  { children, className, pageNumber, variant = "paper", accent },
   ref,
 ) {
+  // react-pageflip overwrites the *outer* (ref'd) node's style attribute
+  // wholesale for positioning, so any inline style set there gets clobbered.
+  // The accent var has to live on this inner wrapper instead.
+  const innerStyle = accent
+    ? ({ "--page-accent": accent } as CSSProperties)
+    : undefined;
+
   return (
     <div
       ref={ref}
@@ -21,7 +29,10 @@ const Page = forwardRef<HTMLDivElement, PageProps>(function Page(
         className,
       )}
     >
-      <div className="scrollbar-thin flex h-full flex-col overflow-y-auto px-6 py-8 sm:px-10 sm:py-10">
+      <div
+        style={innerStyle}
+        className="scrollbar-thin flex h-full flex-col overflow-y-auto px-6 py-8 sm:px-10 sm:py-10"
+      >
         {children}
       </div>
       {pageNumber !== undefined && (

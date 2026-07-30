@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import Page from "../Page";
 import { profile } from "@/data/profile";
+import { moods } from "@/data/moods";
 import { PageEyebrow, PageTitle, Rule } from "./shared";
 
 type AboutPageProps = { pageNumber?: number };
@@ -8,7 +9,7 @@ type AboutPageProps = { pageNumber?: number };
 const AboutPage = forwardRef<HTMLDivElement, AboutPageProps>(
   function AboutPage({ pageNumber }, ref) {
     return (
-      <Page ref={ref} pageNumber={pageNumber}>
+      <Page ref={ref} pageNumber={pageNumber} accent={moods.about}>
         <PageEyebrow>Chapter One</PageEyebrow>
         <PageTitle>About</PageTitle>
         <Rule />

@@ -9,8 +9,10 @@ const BackCoverPage = forwardRef<HTMLDivElement, BackCoverPageProps>(
     return (
       <Page ref={ref} variant="cover" className="items-center justify-center">
         <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-          <div className="h-px w-10 bg-[var(--gold)]/40" />
-          <p className="font-display text-sm italic text-gold/80">
+          <div aria-hidden className="flourish text-lg">
+            &#10086;
+          </div>
+          <p className="font-serif text-lg italic text-gold/80">
             Thanks for reading
           </p>
           <button

@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import Page from "../Page";
 import { profile } from "@/data/profile";
+import { moods } from "@/data/moods";
 import { LinkOut, PageEyebrow, PageTitle, Rule } from "./shared";
 
 type ContactPageProps = { pageNumber?: number };
@@ -8,7 +9,7 @@ type ContactPageProps = { pageNumber?: number };
 const ContactPage = forwardRef<HTMLDivElement, ContactPageProps>(
   function ContactPage({ pageNumber }, ref) {
     return (
-      <Page ref={ref} pageNumber={pageNumber}>
+      <Page ref={ref} pageNumber={pageNumber} accent={moods.contact}>
         <PageEyebrow>Last Chapter</PageEyebrow>
         <PageTitle>Get in Touch</PageTitle>
         <Rule />

@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import Page from "../Page";
 import type { Project } from "@/data/projects";
+import { moods } from "@/data/moods";
 import { Chip, LinkOut, PageEyebrow, PageTitle, Rule } from "./shared";
 
 type ProjectPageProps = {
@@ -13,7 +14,11 @@ type ProjectPageProps = {
 const ProjectPage = forwardRef<HTMLDivElement, ProjectPageProps>(
   function ProjectPage({ project, index, total, pageNumber }, ref) {
     return (
-      <Page ref={ref} pageNumber={pageNumber}>
+      <Page
+        ref={ref}
+        pageNumber={pageNumber}
+        accent={moods.projects[index % moods.projects.length]}
+      >
         <PageEyebrow>
           Project {index + 1} of {total}
         </PageEyebrow>

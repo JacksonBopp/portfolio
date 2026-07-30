@@ -8,7 +8,7 @@ export function Chip({ children }: { children: React.ReactNode }) {
 
 export function PageEyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+    <p className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-[var(--page-accent,var(--accent))]">
       {children}
     </p>
   );
@@ -23,7 +23,13 @@ export function PageTitle({ children }: { children: React.ReactNode }) {
 }
 
 export function Rule() {
-  return <div className="my-4 h-px w-12 bg-[var(--ink-muted)]/30" />;
+  return (
+    <div aria-hidden className="flourish my-4 flex items-center gap-2.5">
+      <span className="h-px w-8 bg-current opacity-40" />
+      <span className="select-none text-base leading-none">&#10086;</span>
+      <span className="h-px w-8 bg-current opacity-40" />
+    </div>
+  );
 }
 
 export function LinkOut({
@@ -39,7 +45,7 @@ export function LinkOut({
       href={href}
       target={isMail ? undefined : "_blank"}
       rel={isMail ? undefined : "noopener noreferrer"}
-      className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-accent underline decoration-accent/40 underline-offset-4 transition hover:decoration-accent"
+      className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-[var(--page-accent,var(--accent))] underline decoration-[var(--page-accent,var(--accent))]/40 underline-offset-4 transition hover:decoration-[var(--page-accent,var(--accent))]"
     >
       {children}
     </a>

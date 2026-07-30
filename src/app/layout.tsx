@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Lora, Playfair_Display } from "next/font/google";
+import { Cinzel, Geist, IM_Fell_English } from "next/font/google";
 import { profile } from "@/data/profile";
 import "./globals.css";
 
@@ -8,13 +8,15 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
 });
 
-const lora = Lora({
-  variable: "--font-lora",
+const imFellEnglish = IM_Fell_English({
+  variable: "--font-fell",
+  weight: "400",
+  style: ["normal", "italic"],
   subsets: ["latin"],
 });
 
@@ -44,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${playfair.variable} ${lora.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${cinzel.variable} ${imFellEnglish.variable} h-full antialiased`}
     >
       <body className="relative z-0 flex min-h-full flex-col">
         <div className="relative z-10 flex flex-1 flex-col">{children}</div>

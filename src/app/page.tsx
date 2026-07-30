@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import Book, { type BookHandle } from "@/components/book/Book";
+import QuickNav, { type NavSection } from "@/components/book/QuickNav";
 import CoverPage from "@/components/book/pages/CoverPage";
 import TitlePage, {
   type TocEntry,
@@ -23,6 +24,7 @@ const CONTACT = PROJECTS_START + projects.length;
 
 export default function Home() {
   const bookRef = useRef<BookHandle>(null);
+  const [activePage, setActivePage] = useState(0);
 
   const navigate = (page: number) => bookRef.current?.goToPage(page);
 
@@ -40,9 +42,25 @@ export default function Home() {
     [],
   );
 
+  const navSections: NavSection[] = useMemo(
+    () => [
+      { label: "Cover", short: "JB", page: COVER },
+      { label: "Contents", short: "TC", page: TOC },
+      { label: "About", short: "AB", page: ABOUT },
+      { label: "Skills & Tools", short: "SK", page: SKILLS },
+      ...projects.map((project, i) => ({
+        label: project.name,
+        short: `P${i + 1}`,
+        page: PROJECTS_START + i,
+      })),
+      { label: "Get in Touch", short: "GT", page: CONTACT },
+    ],
+    [],
+  );
+
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-4 py-10 sm:py-14">
-      <Book ref={bookRef}>
+      <Book ref={bookRef} onPageChange={setActivePage}>
         <CoverPage />
         <TitlePage entries={tocEntries} onNavigate={navigate} pageNumber={TOC + 1} />
         <AboutPage pageNumber={ABOUT + 1} />
@@ -59,6 +77,8 @@ export default function Home() {
         <ContactPage pageNumber={CONTACT + 1} />
         <BackCoverPage onRestart={() => navigate(COVER)} />
       </Book>
+
+      <QuickNav sections={navSections} activePage={activePage} onNavigate={navigate} />
     </main>
   );
 }

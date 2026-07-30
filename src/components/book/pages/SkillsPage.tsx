@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import Page from "../Page";
 import { skillCategories } from "@/data/profile";
+import { moods } from "@/data/moods";
 import { Chip, PageEyebrow, PageTitle, Rule } from "./shared";
 
 type SkillsPageProps = { pageNumber?: number };
@@ -8,7 +9,7 @@ type SkillsPageProps = { pageNumber?: number };
 const SkillsPage = forwardRef<HTMLDivElement, SkillsPageProps>(
   function SkillsPage({ pageNumber }, ref) {
     return (
-      <Page ref={ref} pageNumber={pageNumber}>
+      <Page ref={ref} pageNumber={pageNumber} accent={moods.skills}>
         <PageEyebrow>Chapter Two</PageEyebrow>
         <PageTitle>Skills &amp; Tools</PageTitle>
         <Rule />

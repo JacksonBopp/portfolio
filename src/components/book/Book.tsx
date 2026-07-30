@@ -56,10 +56,11 @@ export type BookHandle = {
 
 type BookProps = {
   children: ReactNode;
+  onPageChange?: (index: number) => void;
 };
 
 const Book = forwardRef<BookHandle, BookProps>(function Book(
-  { children },
+  { children, onPageChange },
   forwardedRef,
 ) {
   const bookRef = useRef<HTMLFlipBookHandle | null>(null);
@@ -69,6 +70,14 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
   const [pageIndex, setPageIndex] = useState(0);
   const [ready, setReady] = useState(false);
 
+  const updatePageIndex = useCallback(
+    (index: number) => {
+      setPageIndex(index);
+      onPageChange?.(index);
+    },
+    [onPageChange],
+  );
+
   const goNext = useCallback(() => {
     bookRef.current?.pageFlip().flipNext();
   }, []);
@@ -77,13 +86,16 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
     bookRef.current?.pageFlip().flipPrev();
   }, []);
 
-  const goToPage = useCallback((page: number) => {
-    // flip() breaks when jumping directly to page 0 in showCover mode;
-    // turnToPage() jumps instantly without going through the flip animation
-    // state machine, which is more reliable for arbitrary jumps anyway.
-    bookRef.current?.pageFlip().turnToPage(page);
-    setPageIndex(page);
-  }, []);
+  const goToPage = useCallback(
+    (page: number) => {
+      // flip() breaks when jumping directly to page 0 in showCover mode;
+      // turnToPage() jumps instantly without going through the flip animation
+      // state machine, which is more reliable for arbitrary jumps anyway.
+      bookRef.current?.pageFlip().turnToPage(page);
+      updatePageIndex(page);
+    },
+    [updatePageIndex],
+  );
 
   useImperativeHandle(forwardedRef, () => ({ goToPage, goNext, goPrev }), [
     goToPage,
@@ -145,7 +157,7 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
           key={`${flipBookProps.width}x${flipBookProps.height}`}
           {...flipBookProps}
           ref={bookRef}
-          onFlip={(e) => setPageIndex(e.data)}
+          onFlip={(e) => updatePageIndex(e.data)}
         >
           {pages}
         </HTMLFlipBook>
