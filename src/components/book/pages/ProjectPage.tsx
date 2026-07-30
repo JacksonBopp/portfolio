@@ -33,9 +33,24 @@ const ProjectPage = forwardRef<HTMLDivElement, ProjectPageProps>(
         <p className="font-serif text-[15px] font-semibold leading-snug text-ink sm:text-base">
           {project.blurb}
         </p>
-        <p className="mt-3 font-serif text-sm leading-relaxed text-ink sm:text-[15px]">
-          {project.description}
+        <p className="mt-2 font-serif text-sm leading-relaxed text-ink sm:text-[15px]">
+          {project.summary}
         </p>
+
+        <ul className="mt-3 flex flex-col gap-1.5">
+          {project.highlights.map((point) => (
+            <li
+              key={point}
+              className="flex gap-2 font-serif text-sm leading-snug text-ink sm:text-[15px]"
+            >
+              <span
+                aria-hidden
+                className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[var(--page-accent,var(--accent))]"
+              />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {project.tech.map((t) => (

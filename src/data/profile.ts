@@ -3,10 +3,18 @@ export const profile = {
   initials: "JB",
   tagline: "Computer Engineering @ USF",
   subtagline: "Building from firmware to frontends",
+  intro:
+    "Computer Engineering student at USF. Most of my projects live somewhere between embedded systems and web apps, with AI filling in the gaps.",
   bio: [
-    "I'm a Computer Engineering student at USF, graduating fall 2026 and open to relocate. Most of my projects live somewhere between embedded systems and web apps, with AI filling in the gaps.",
-    "Right now I'm volunteering with the City of Winter Haven, helping set up server hardware and AI hosting infrastructure. Before that, most of my time has gone into hardware test tooling, hackathon builds, and figuring out how to get a microcontroller to talk to a web dashboard without anything catching fire.",
+    "Right now I'm volunteering with the City of Winter Haven, helping set up server hardware and AI hosting infrastructure. Before that, most of my time went into hardware test tooling, hackathon builds, and getting a microcontroller to talk to a web dashboard without anything catching fire.",
     "Outside of code: reading, gaming, cats, anime, and the occasional game of Magic the Gathering.",
+  ],
+  facts: [
+    { label: "Location", value: "Tampa, FL (open to relocate)" },
+    { label: "Graduating", value: "Fall 2026" },
+    { label: "Education", value: "B.S. Computer Engineering, USF (GPA 3.52, Dean's List)" },
+    { label: "Certifications", value: "Certified SOLIDWORKS Associate (CSWA)" },
+    { label: "Currently", value: "Smart City Student Volunteer, City of Winter Haven" },
   ],
   location: "Tampa, FL (open to relocate)",
   graduation: "Graduating Fall 2026",
@@ -26,33 +34,47 @@ export type SkillCategory = {
 export const skillCategories: SkillCategory[] = [
   {
     label: "Languages",
-    skills: ["Python", "TypeScript", "JavaScript", "C", "C++", "C#", "R"],
+    skills: [
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "C",
+      "C++",
+      "C#",
+      "MATLAB",
+      "R",
+      "Verilog/VHDL",
+      "RISC-V Assembly",
+    ],
+  },
+  {
+    label: "AI / LLM Tools",
+    skills: [
+      "Anthropic Claude API",
+      "Google Gemini API",
+      "IBM watsonx.ai",
+      "ElevenLabs",
+      "Ollama",
+    ],
   },
   {
     label: "Frameworks & Libraries",
-    skills: ["Next.js", "React", "FastAPI", "Tailwind CSS"],
+    skills: ["Next.js", "React", "FastAPI", "PyQt6", "Tailwind CSS"],
   },
   {
     label: "Infrastructure & Data",
     skills: [
       "Docker",
+      "MQTT",
       "PostgreSQL",
       "MongoDB",
       "SQLite",
-      "MQTT",
       "Git",
       "Linux",
     ],
   },
   {
-    label: "Hardware & AI",
-    skills: [
-      "Raspberry Pi",
-      "Arduino",
-      "MSP430",
-      "UART/Serial",
-      "IBM watsonx.ai",
-      "Anthropic Claude",
-    ],
+    label: "Hardware",
+    skills: ["Raspberry Pi", "Arduino", "FPGA", "MSP430", "UART/Serial"],
   },
 ];

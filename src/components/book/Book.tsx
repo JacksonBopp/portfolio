@@ -14,39 +14,13 @@ import {
 import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import type { HTMLFlipBookHandle } from "react-pageflip";
+import { useBookSize } from "./useBookSize";
 
 const HTMLFlipBook = dynamic(() => import("react-pageflip"), {
   ssr: false,
 });
 
-const ASPECT_RATIO = 1.42;
-const CHROME_HEIGHT = 132;
-const MIN_WIDTH = 260;
-const MAX_WIDTH = 480;
-
-function useBookSize() {
-  const [size, setSize] = useState({ width: 340, height: 340 * ASPECT_RATIO });
-
-  useEffect(() => {
-    function computeSize() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const maxHeight = Math.max(vh - CHROME_HEIGHT, 360);
-      const maxWidth = Math.max(vw - 32, 220);
-
-      let width = Math.min(maxWidth, maxHeight / ASPECT_RATIO, MAX_WIDTH);
-      width = Math.max(width, Math.min(MIN_WIDTH, maxWidth));
-
-      setSize({ width, height: width * ASPECT_RATIO });
-    }
-
-    computeSize();
-    window.addEventListener("resize", computeSize);
-    return () => window.removeEventListener("resize", computeSize);
-  }, []);
-
-  return size;
-}
+const FLIP_MS = 340;
 
 export type BookHandle = {
   goToPage: (page: number) => void;
@@ -70,6 +44,8 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
   const [pageIndex, setPageIndex] = useState(0);
   const [ready, setReady] = useState(false);
 
+  const cascadeTargetRef = useRef<number | null>(null);
+
   const updatePageIndex = useCallback(
     (index: number) => {
       setPageIndex(index);
@@ -78,23 +54,57 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
     [onPageChange],
   );
 
+  // Riffles toward cascadeTargetRef one real flip at a time. Each step is
+  // scheduled on its own timer (not chained inside onFlip) because calling
+  // flipNext() again synchronously inside the flip library's own completion
+  // callback never yields back to the browser, so every flip after the first
+  // resolves within the same tick with nothing actually painted. Waiting a
+  // full FLIP_MS between steps forces each turn to really render.
+  const cascadeStep = useCallback((target: number) => {
+    if (cascadeTargetRef.current !== target) return; // cancelled or superseded
+    const pf = bookRef.current?.pageFlip();
+    if (!pf) return;
+    const current = pf.getCurrentPageIndex();
+    if (current === target) {
+      cascadeTargetRef.current = null;
+      return;
+    }
+    if (target > current) {
+      pf.flipNext();
+    } else {
+      // flipPrev() simulates a click near the left edge of a two-page
+      // spread to trigger the backward flip gesture; in single-page
+      // "portrait" mode that coordinate lands inside the current page
+      // instead of a previous-page region, so it silently no-ops.
+      // turnToPrevPage() jumps directly by index instead, which is
+      // reliable here (it just loses the flip animation).
+      pf.turnToPrevPage();
+    }
+    window.setTimeout(() => cascadeStep(target), FLIP_MS + 30);
+  }, []);
+
   const goNext = useCallback(() => {
+    cascadeTargetRef.current = null;
     bookRef.current?.pageFlip().flipNext();
   }, []);
 
   const goPrev = useCallback(() => {
-    bookRef.current?.pageFlip().flipPrev();
+    cascadeTargetRef.current = null;
+    bookRef.current?.pageFlip().turnToPrevPage();
   }, []);
 
   const goToPage = useCallback(
     (page: number) => {
-      // flip() breaks when jumping directly to page 0 in showCover mode;
-      // turnToPage() jumps instantly without going through the flip animation
-      // state machine, which is more reliable for arbitrary jumps anyway.
-      bookRef.current?.pageFlip().turnToPage(page);
-      updatePageIndex(page);
+      const clamped = Math.max(0, Math.min(page, pageCount - 1));
+      const current = bookRef.current?.pageFlip().getCurrentPageIndex() ?? pageIndex;
+      if (clamped === current) {
+        cascadeTargetRef.current = null;
+        return;
+      }
+      cascadeTargetRef.current = clamped;
+      cascadeStep(clamped);
     },
-    [updatePageIndex],
+    [cascadeStep, pageCount, pageIndex],
   );
 
   useImperativeHandle(forwardedRef, () => ({ goToPage, goNext, goPrev }), [
@@ -123,10 +133,10 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
       width: Math.round(width),
       height: Math.round(height),
       size: "fixed" as const,
-      showCover: true,
+      showCover: false,
       usePortrait: true,
       mobileScrollSupport: true,
-      flippingTime: 700,
+      flippingTime: FLIP_MS,
       maxShadowOpacity: 0.5,
       className: "mx-auto",
       style: {},
@@ -149,6 +159,7 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         onAnimationComplete={() => setReady(true)}
+        className="relative"
         style={{
           filter: "drop-shadow(0 30px 45px rgba(0,0,0,0.45))",
         }}
@@ -183,12 +194,12 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
         <motion.button
           type="button"
           onClick={() => goToPage(0)}
-          aria-label="Jump to cover"
+          aria-label="Jump to contents"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="hidden cursor-pointer rounded-full border border-[var(--gold)]/30 px-4 py-1.5 tracking-wide transition-colors hover:border-[var(--gold)] hover:text-[var(--gold-bright)] sm:inline-block"
         >
-          Cover
+          Contents
         </motion.button>
         <span className="tabular-nums" data-testid="page-indicator">
           {Math.min(pageIndex + 1, pageCount)} / {pageCount}

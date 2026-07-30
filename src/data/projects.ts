@@ -3,7 +3,8 @@ export type Project = {
   name: string;
   role?: string;
   blurb: string;
-  description: string;
+  summary: string;
+  highlights: string[];
   tech: string[];
   links: { label: string; href: string }[];
 };
@@ -14,8 +15,13 @@ export const projects: Project[] = [
     name: "Testbench",
     role: "Solo project",
     blurb: "Hardware-agnostic test automation platform with AI failure analysis.",
-    description:
-      "Streams live telemetry from any UART-capable microcontroller through a lightweight bridge host over MQTT to a Next.js dashboard. Any chip that speaks a simple JSON-over-UART protocol drops in — STM32, ESP32, AVR, RP2040, MSP430, and more. Built against a reference MSP430FR2355 LaunchPad, with a bridge running on a Raspberry Pi Zero 2 W and a pure-software simulator so the whole pipeline runs end to end without hardware. Failed test runs get root-cause analysis from an IBM watsonx.ai model, and a built-in chat assistant answers questions about wiring, firmware, and failing steps.",
+    summary:
+      "Streams live telemetry from any UART-capable microcontroller to a web dashboard, with AI-powered analysis when a test run fails.",
+    highlights: [
+      "Streams live telemetry from an MSP430 microcontroller through a Raspberry Pi Zero 2 W over MQTT to a Next.js dashboard, updated in real time over SSE",
+      "IBM watsonx.ai (Granite 3-8B) analyzes failed runs; a Gemini-powered chat assistant answers wiring and firmware questions from the same dashboard",
+      "Full Docker Compose stack (PostgreSQL + Mosquitto), C firmware for the MSP430, and a Python UART-to-MQTT bridge for the Pi",
+    ],
     tech: [
       "Next.js",
       "TypeScript",
@@ -31,12 +37,37 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "decision-engine",
+    name: "Decision Engine",
+    role: "Solo project",
+    blurb: "Multi-tenant job scheduler simulator for shared compute pools.",
+    summary:
+      "Simulates a scheduler over a resource pool and job queue, the kind of problem behind a CI runner fleet or a shared GPU lab.",
+    highlights: [
+      "Priority scheduling with a fairness penalty for tenants who've already consumed more than their share",
+      "Hard constraints on resource label matching and per-tenant quotas, plus deadline hit/miss tracking",
+      "Pure Python standard library, zero dependencies, full test suite covering the scheduling edge cases",
+    ],
+    tech: ["Python"],
+    links: [
+      {
+        label: "Source",
+        href: "https://github.com/JacksonBopp/decision-engine",
+      },
+    ],
+  },
+  {
     slug: "radiology-second-opinion-agent",
     name: "Radiology Second-Opinion Agent",
-    role: "Team project — Data & MLOps Engineer",
+    role: "Team project (Data & MLOps Engineer)",
     blurb: "AI system that flags chest X-ray abnormalities and drafts a diagnostic report.",
-    description:
-      "A four-person build with a computer vision model trained to detect conditions like pneumonia and lung nodules, an agentic layer that cross-references findings against similar cases and medical literature, and an LLM that synthesizes it all into a structured report with ranked diagnoses and confidence scores. My part covered the data pipeline, model serving, and infrastructure — MLflow for experiment tracking and model registry, Chroma for retrieval, and Evidently for drift monitoring on incoming scans. The goal was never to replace a radiologist, just to be a reliable second opinion where specialist access is limited.",
+    summary:
+      "A four-person build: a CV model flags chest X-ray abnormalities, an agentic layer cross-references similar cases, and an LLM drafts a ranked report.",
+    highlights: [
+      "My part covered the data pipeline, model serving, and infrastructure",
+      "MLflow for experiment tracking and model registry, Chroma for retrieval, Evidently for drift monitoring on incoming scans",
+      "Built as a second opinion for scenarios with limited specialist access, not a replacement for a radiologist",
+    ],
     tech: [
       "Python",
       "FastAPI",
@@ -57,11 +88,16 @@ export const projects: Project[] = [
   {
     slug: "edward",
     name: "Edward",
-    role: "Team project — IBM Bob Hackathon",
-    blurb: "A dry-witted, voice-enabled desktop AI assistant running locally on Ollama.",
-    description:
-      "Built for the IBM Bob hackathon: a desktop assistant with a distinct personality, local inference through Ollama, and voice output via ElevenLabs. The concept carried forward into Testbench, where it became the dashboard's built-in troubleshooting chat, repointed at IBM watsonx.ai Granite models for hardware-specific Q&A.",
-    tech: ["Python", "IBM watsonx.ai", "Ollama", "ElevenLabs"],
+    role: "Team project (IBM Bob Hackathon)",
+    blurb: "A voice-enabled desktop AI assistant with a PyQt6 overlay UI.",
+    summary:
+      "Built for the IBM Bob hackathon: a desktop assistant with a distinct personality, a full voice pipeline, and computer control.",
+    highlights: [
+      "Built the PyQt6 overlay UI (sliding panel, alchemy circle animation, listening indicator) and the ElevenLabs TTS / faster-whisper STT voice pipeline",
+      "Smart clipboard context enhancement and an encrypted password vault wired into the system tray",
+      "PyAutoGUI-driven computer control behind a confirmation handler, plus hybrid local and cloud AI backends",
+    ],
+    tech: ["Python", "PyQt6", "ElevenLabs", "faster-whisper", "FastAPI"],
     links: [
       {
         label: "Source",
@@ -72,11 +108,16 @@ export const projects: Project[] = [
   {
     slug: "voicelegacy",
     name: "VoiceLegacy",
-    role: "Team project — Hackabull @ USF",
+    role: "Team project (Hackabull @ USF)",
     blurb: "A voice preservation tool that clones and archives a person's voice.",
-    description:
-      "A Hackabull entry built around ElevenLabs voice cloning, with a simple front end for recording a voice sample, storing it, and replaying synthesized speech later. The idea: give people a low-friction way to preserve a voice worth keeping.",
-    tech: ["Python", "FastAPI", "ElevenLabs", "React"],
+    summary:
+      "A Hackabull entry built around ElevenLabs voice cloning, with a simple front end for recording, storing, and replaying a voice.",
+    highlights: [
+      "Led all frontend development: landing page, phrase bank layout, category filters, and tone settings",
+      "Built the Speak For Me AI rewrite flow, local onboarding, and record page controls",
+      "Managed PR review and merges across the team throughout the hackathon",
+    ],
+    tech: ["Next.js", "Tailwind CSS", "MongoDB Atlas", "ElevenLabs", "Gemini API"],
     links: [
       { label: "Source", href: "https://github.com/ntoptchi/VoiceLegacy" },
     ],
@@ -86,8 +127,13 @@ export const projects: Project[] = [
     name: "Earthquake & Tsunami ODE Simulation",
     role: "Solo project",
     blurb: "A Python simulation of seismic dynamics, aftershocks, and tsunami propagation.",
-    description:
-      "Models earthquake motion as a damped harmonic oscillator inspired by elastic rebound theory, aftershock activity with an Omori-style rate equation, and tsunami wave propagation from estimated seafloor displacement. Built for conceptual modeling and visualization rather than predictive accuracy — you set the magnitude, depth, and location, and it generates time-domain and spatial plots of how the system responds.",
+    summary:
+      "Models earthquake motion, aftershock decay, and tsunami propagation for conceptual visualization rather than predictive accuracy.",
+    highlights: [
+      "Earthquake motion modeled as a damped harmonic oscillator, inspired by elastic rebound theory",
+      "Aftershock activity modeled with an Omori-style rate equation",
+      "Tsunami wave propagation from estimated seafloor displacement, rendered as time-domain and spatial plots",
+    ],
     tech: ["Python", "NumPy", "SciPy", "Matplotlib"],
     links: [
       {

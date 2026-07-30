@@ -20,7 +20,7 @@ const BackCoverPage = forwardRef<HTMLDivElement, BackCoverPageProps>(
             onClick={onRestart}
             className="mt-4 cursor-pointer rounded-full border border-[var(--gold)]/40 px-4 py-1.5 font-sans text-xs uppercase tracking-[0.2em] text-gold/80 transition hover:border-[var(--gold)] hover:text-[var(--gold-bright)]"
           >
-            Back to cover
+            Back to contents
           </button>
           <p className="mt-8 font-sans text-[10px] uppercase tracking-[0.2em] text-gold/40">
             © {year} Jackson Bopp

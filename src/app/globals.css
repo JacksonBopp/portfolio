@@ -1,38 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --scene-bg-1: #0f0c09;
-  --scene-bg-2: #201409;
-  --scene-vignette: rgba(0, 0, 0, 0.55);
-  --scene-glow: rgba(255, 191, 120, 0.1);
-  --scene-fg: #f3ead9;
-  --scene-muted: #b9ab93;
+  --scene-bg-1: #0a0618;
+  --scene-bg-2: #1b0f36;
+  --scene-vignette: rgba(0, 0, 0, 0.6);
+  --scene-glow: rgba(255, 199, 120, 0.14);
+  --scene-fg: #f1e6d8;
+  --scene-muted: #b8a9c9;
 
-  --paper: #f3e8cf;
-  --paper-shade: #e6d6ac;
+  --paper: #f4e8cd;
+  --paper-shade: #e8d5a8;
   --paper-stain: rgba(154, 116, 61, 0.16);
-  --ink: #2b2118;
-  --ink-muted: #6b5a44;
+  --ink: #281c30;
+  --ink-muted: #6a5a72;
 
-  --cover-1: #1c2b20;
-  --cover-2: #10190f;
-  --cover-edge: #060a06;
-  --wax: #7a1f2b;
-  --wax-dark: #4a1119;
-  --gold: #c9a24d;
-  --gold-bright: #f0cf87;
+  --cover-1: #17235c;
+  --cover-2: #0c1533;
+  --cover-edge: #05081c;
+  --wax: #8c1f2b;
+  --wax-dark: #530f18;
+  --gold: #d1a44f;
+  --gold-bright: #f6d68e;
 
-  --accent: #8a2f2f;
+  --accent: #7a2e42;
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --scene-bg-1: #e7dcc4;
-    --scene-bg-2: #cfc09c;
-    --scene-vignette: rgba(60, 45, 20, 0.18);
-    --scene-glow: rgba(255, 255, 255, 0.35);
-    --scene-fg: #2b2420;
-    --scene-muted: #4d4335;
+    --scene-bg-1: #ded0f0;
+    --scene-bg-2: #b9a3d9;
+    --scene-vignette: rgba(30, 15, 55, 0.18);
+    --scene-glow: rgba(255, 255, 255, 0.4);
+    --scene-fg: #281c30;
+    --scene-muted: #4d3f57;
   }
 }
 
@@ -68,8 +68,9 @@ body::before {
       var(--scene-glow),
       transparent 60%
     ),
-    radial-gradient(60% 50% at 85% 80%, rgba(122, 31, 43, 0.08), transparent 70%);
-  animation: ambient-glow 9s ease-in-out infinite;
+    radial-gradient(55% 45% at 88% 85%, rgba(140, 31, 43, 0.14), transparent 70%),
+    radial-gradient(45% 40% at 8% 85%, rgba(70, 40, 150, 0.16), transparent 70%);
+  animation: ambient-glow 11s ease-in-out infinite;
 }
 
 @keyframes ambient-glow {
@@ -80,7 +81,7 @@ body::before {
   }
   50% {
     opacity: 1;
-    transform: scale(1.04);
+    transform: scale(1.03);
   }
 }
 
@@ -125,12 +126,12 @@ body::before {
 .book-cover-face {
   background: radial-gradient(
       140% 120% at 15% 10%,
-      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.07),
       transparent 55%
     ),
     linear-gradient(155deg, var(--cover-1), var(--cover-2) 65%, var(--cover-edge));
   color: var(--gold-bright);
-  box-shadow: inset 0 0 0 1px rgba(201, 162, 77, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(209, 164, 79, 0.14);
 }
 
 .wax-seal {
@@ -158,4 +159,53 @@ body::before {
 .scrollbar-thin {
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent;
+}
+
+.book3d {
+  position: relative;
+  display: block;
+  filter: drop-shadow(0 35px 40px rgba(0, 0, 0, 0.55));
+}
+
+.book3d__cover {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  backface-visibility: hidden;
+}
+
+.book3d__spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(90deg, var(--cover-edge), var(--cover-1));
+  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book3d__spine-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-cinzel), serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: color-mix(in srgb, var(--gold) 75%, transparent);
+  white-space: nowrap;
+}
+
+.book3d__leaf {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: repeating-linear-gradient(
+    0deg,
+    #ede1c4 0px,
+    #ede1c4 2px,
+    #d9c79a 2px,
+    #d9c79a 3px
+  );
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
 }
