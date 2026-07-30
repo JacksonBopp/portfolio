@@ -78,7 +78,11 @@ const Book = forwardRef<BookHandle, BookProps>(function Book(
   }, []);
 
   const goToPage = useCallback((page: number) => {
-    bookRef.current?.pageFlip().flip(page);
+    // flip() breaks when jumping directly to page 0 in showCover mode;
+    // turnToPage() jumps instantly without going through the flip animation
+    // state machine, which is more reliable for arbitrary jumps anyway.
+    bookRef.current?.pageFlip().turnToPage(page);
+    setPageIndex(page);
   }, []);
 
   useImperativeHandle(forwardedRef, () => ({ goToPage, goNext, goPrev }), [
