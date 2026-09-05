@@ -84,7 +84,7 @@ export default function ConsoleShell() {
         <button
           type="button"
           onClick={() => goToSection("overview")}
-          className="flex items-center gap-2 transition active:scale-95 md:mb-8"
+          className="flex shrink-0 items-center gap-2 transition active:scale-95 md:mb-8"
           aria-label="Go to overview"
         >
           <span className="h-2 w-2 rounded-full bg-[var(--green)] animate-blink" />
@@ -112,14 +112,14 @@ export default function ConsoleShell() {
           ))}
         </nav>
 
-        <nav className="flex gap-1 md:hidden">
+        <nav className="scrollbar-thin flex min-w-0 flex-1 gap-1 overflow-x-auto md:hidden">
           {SECTIONS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => goToSection(s.id)}
               className={clsx(
-                "rounded px-2.5 py-1.5 font-mono-tech text-xs tracking-wide transition active:scale-95",
+                "shrink-0 rounded px-2.5 py-1.5 font-mono-tech text-xs tracking-wide transition active:scale-95",
                 section === s.id
                   ? "bg-[var(--amber)]/10 text-[var(--amber)]"
                   : "text-[var(--fg-muted)]",
