@@ -12,7 +12,7 @@ const TIER_ORDER: SkillTier[] = ["core", "working", "familiar"];
 const TIER_STYLE: Record<SkillTier, string> = {
   core: "border-[var(--amber-dim)] text-[var(--amber)] bg-[var(--amber)]/5",
   working: "border-[var(--cyan-dim)] text-[var(--cyan)] bg-[var(--cyan)]/5",
-  familiar: "border-[var(--hairline)] text-[var(--fg-muted)]",
+  familiar: "border-[var(--violet-dim)] text-[var(--violet)] bg-[var(--violet)]/5",
 };
 
 export default function Skills({ mode }: { mode: ResumeTrackId }) {
