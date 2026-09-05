@@ -21,20 +21,24 @@ export const projects: Project[] = [
     role: "Solo project",
     blurb: "Hardware-agnostic test automation platform with AI failure analysis.",
     summary:
-      "Streams live telemetry from any UART-capable microcontroller to a web dashboard, with AI-powered analysis when a test run fails.",
+      "Streams live telemetry from four different microcontrollers to a web dashboard, with AI-powered analysis when a test run fails and a CI pipeline that validates every board in simulation.",
     highlights: [
-      "Streams live telemetry from an MSP430 microcontroller through a Raspberry Pi Zero 2 W over MQTT to a Next.js dashboard, updated in real time over SSE",
+      "Reference firmware for the MSP430FR2355, ESP32, STM32F103C8, and RP2040 all emit the same JSON-over-UART frame format, so any of the four boards works with the same Raspberry Pi bridge, MQTT pipeline, and Next.js dashboard with real-time SSE updates",
       "IBM watsonx.ai (Granite 3-8B) analyzes failed runs; a Gemini-powered chat assistant answers wiring and firmware questions from the same dashboard",
-      "Full Docker Compose stack (PostgreSQL + Mosquitto), C firmware for the MSP430, and a Python UART-to-MQTT bridge for the Pi",
+      "A capture-and-replay tool and hardware simulator let the full test suite run without physical hardware attached, backed by a GitHub Actions workflow that spins up Postgres and Mosquitto and runs an end-to-end simulated-hardware regression test on every push",
+      "Schema-validated frame parsing and a cross-platform test suite check that all four firmware builds produce frames the backend accepts",
     ],
     tech: [
       "Next.js",
       "TypeScript",
-      "PostgreSQL",
-      "Drizzle ORM",
       "MQTT",
       "IBM watsonx.ai",
-      "Raspberry Pi",
+      "MSP430FR2355",
+      "ESP32",
+      "STM32F103C8",
+      "RP2040",
+      "GitHub Actions",
+      "Docker",
     ],
     links: [
       { label: "Live app", href: "https://testbench.up.railway.app" },
@@ -46,12 +50,12 @@ export const projects: Project[] = [
   {
     slug: "fpga-audio-message-recorder",
     name: "FPGA Audio Message Recorder",
-    role: "Solo project (university course final)",
+    role: "Team of 3, sole implementer (university course final)",
     blurb: "An FPGA-based audio recorder and playback system with a PicoBlaze-driven UI.",
     summary:
       "A prototype audio message recorder built on an AMD/Xilinx Spartan-6 FPGA: record, play, pause, rewind, and delete voice messages through physical controls and a serial terminal menu.",
     highlights: [
-      "Built the top-level Verilog FSM and PicoBlaze firmware controlling recording, playback, rewind, pause, and multi-message navigation across physical switches and an interactive UART serial terminal menu",
+      "Built the top-level Verilog FSM and PicoBlaze firmware managing record, play, pause, rewind, and a 4-message library with independent delete, controlled through physical switches and an interactive UART serial terminal menu",
       "Interfaced an SSM2603 audio CODEC over I2C for analog-to-digital and digital-to-analog conversion, with handshake signals synchronizing audio timing between the CODEC and the microcontroller",
       "Streamed recorded samples to and from DDR2 SDRAM, tracking read/write addresses so playback stops exactly at the end of each saved message and supports full rewind",
       "Iterated through several stability revisions to fix voice distortion and out-of-order message playback, adding FPGA-side volume scaling along the way",
@@ -96,27 +100,18 @@ export const projects: Project[] = [
     summary:
       "A four-person build: a CV model flags chest X-ray abnormalities, an agentic layer cross-references similar cases, and an LLM drafts a ranked report.",
     highlights: [
-      "My part covered the data pipeline, model serving, and infrastructure",
-      "MLflow for experiment tracking and model registry, Chroma for retrieval, Evidently for drift monitoring on incoming scans",
+      "Owned the model serving layer and its test coverage, including unit tests, mock-LLM tests, and endpoint validation",
+      "Built Evidently-based data drift monitoring on incoming scans in production, plus an MLflow registry for experiment tracking",
       "Built as a second opinion for scenarios with limited specialist access, not a replacement for a radiologist",
     ],
-    tech: [
-      "Python",
-      "FastAPI",
-      "MLflow",
-      "Chroma",
-      "Evidently",
-      "Claude API",
-      "React",
-      "Vite",
-    ],
+    tech: ["Python", "FastAPI", "Docker Compose", "MLflow", "Evidently", "pytest"],
     links: [
       {
         label: "Source",
         href: "https://github.com/JacksonBopp/radiology-second-opinion-agent",
       },
     ],
-    tracks: ["software"],
+    tracks: ["software", "automation"],
     status: "complete",
   },
   {

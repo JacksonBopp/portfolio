@@ -39,4 +39,14 @@ export const openSourceContributions: OpenSourceContribution[] = [
     ],
     tracks: ["automation", "embedded", "software"],
   },
+  {
+    project: "TinyGo",
+    repoUrl: "https://github.com/tinygo-org/tinygo",
+    tech: ["Go", "LLVM", "Concurrency"],
+    bullets: [
+      "Found an unsynchronized write in the runtime's timer reset path racing against every other lock-protected access to the same data",
+      "Built the compiler from source and wrote a targeted concurrency stress test to try to reproduce the reported crash, then reported the negative repro result honestly alongside the fix rather than overstating what the test showed",
+    ],
+    tracks: ["automation", "embedded"],
+  },
 ];

@@ -17,7 +17,7 @@ export const experience: ExperienceEntry[] = [
     bullets: [
       "Installed server hardware and performed rack maintenance for city technology infrastructure",
       "Provisioned and configured YubiKey security keys for staff authentication",
-      "Resolved IT support tickets and assisted with early-stage AI hosting infrastructure",
+      "Resolved IT support tickets and optimized PyTorch/TensorFlow environments for the city's early-stage AI hosting infrastructure",
     ],
   },
   {
@@ -27,7 +27,7 @@ export const experience: ExperienceEntry[] = [
     start: "Apr 2023",
     end: "Mar 2026",
     bullets: [
-      "Built and maintained a Square-based website for online ordering",
+      "Developed the front-end of the restaurant's Square-based ordering site, working within the platform's UI constraints to deliver a functional ordering experience",
       "Managed shift operations and enforced food safety procedures",
     ],
   },

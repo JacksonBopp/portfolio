@@ -14,7 +14,12 @@ export const profile = {
     { label: "Graduating", value: "Fall 2026" },
     {
       label: "Education",
-      value: "B.S. Computer Engineering, University of South Florida (GPA 3.52, Dean's List)",
+      value: "B.S. Computer Engineering, University of South Florida (GPA 3.52/4.00, Dean's List)",
+    },
+    {
+      label: "Coursework",
+      value:
+        "Embedded Systems, Computer Architecture, CMOS-VLSI Design, FPGA Design, Operating Systems, Computer System Design, Trustworthy Infrastructures",
     },
     {
       label: "Certifications",
