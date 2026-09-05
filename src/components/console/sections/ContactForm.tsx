@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { sendContactMessage, type ContactFormState } from "@/lib/sendContactMessage";
 
 const initialState: ContactFormState = { status: "idle" };
 
 export default function ContactForm() {
   const [state, formAction, pending] = useActionState(sendContactMessage, initialState);
+  const [renderedAt] = useState(() => Date.now());
 
   return (
     <div className="hairline rounded p-5">
@@ -15,12 +16,24 @@ export default function ContactForm() {
       </span>
 
       <form action={formAction} className="mt-3 flex flex-col gap-3">
+        <input type="hidden" name="renderedAt" value={renderedAt} />
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute h-0 w-0 opacity-0"
+          style={{ left: "-9999px" }}
+        />
+
         <div className="flex flex-col gap-3 sm:flex-row">
           <input
             name="name"
             type="text"
             placeholder="Name"
             required
+            maxLength={100}
             className="hairline w-full rounded bg-transparent px-3 py-2 text-sm text-[var(--fg)] outline-none placeholder:text-[var(--fg-dim)] focus:border-[var(--cyan-dim)]"
           />
           <input
@@ -28,6 +41,7 @@ export default function ContactForm() {
             type="email"
             placeholder="Email"
             required
+            maxLength={254}
             className="hairline w-full rounded bg-transparent px-3 py-2 text-sm text-[var(--fg)] outline-none placeholder:text-[var(--fg-dim)] focus:border-[var(--cyan-dim)]"
           />
         </div>
@@ -36,6 +50,7 @@ export default function ContactForm() {
           placeholder="What's up?"
           required
           rows={4}
+          maxLength={5000}
           className="hairline w-full resize-none rounded bg-transparent px-3 py-2 text-sm text-[var(--fg)] outline-none placeholder:text-[var(--fg-dim)] focus:border-[var(--cyan-dim)]"
         />
 

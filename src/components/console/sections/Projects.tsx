@@ -14,7 +14,7 @@ const PROJECT_DIAGRAMS: Record<string, React.ComponentType> = {
 const STATUS_STYLE: Record<Project["status"], string> = {
   deployed: "text-[var(--green)]",
   complete: "text-[var(--cyan)]",
-  archived: "text-[var(--fg-dim)]",
+  archived: "text-[var(--violet)]",
 };
 
 type Tab = "projects" | "open-source";
