@@ -134,6 +134,14 @@ export default function ConsoleShell() {
           <ModeSelect mode={mode} onChange={setMode} />
           <StatusStrip />
           <SoundToggle />
+          <a
+            href="https://github.com/JacksonBopp/portfolio"
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono-tech text-[11px] text-[var(--fg-dim)] transition hover:text-[var(--fg-muted)]"
+          >
+            view source ↗
+          </a>
         </div>
       </aside>
 
@@ -179,6 +187,14 @@ export default function ConsoleShell() {
           <ModeSelect mode={mode} onChange={setMode} />
           <StatusStrip />
           <SoundToggle />
+          <a
+            href="https://github.com/JacksonBopp/portfolio"
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono-tech text-[11px] text-[var(--fg-dim)] transition hover:text-[var(--fg-muted)]"
+          >
+            view source ↗
+          </a>
         </div>
       </main>
 

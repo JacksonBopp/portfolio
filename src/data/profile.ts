@@ -12,16 +12,23 @@ export const profile = {
   facts: [
     { label: "Location", value: "Tampa, FL (open to relocate)" },
     { label: "Graduating", value: "Fall 2026" },
-    { label: "Education", value: "B.S. Computer Engineering, USF (GPA 3.52, Dean's List)" },
+    {
+      label: "Education",
+      value: "B.S. Computer Engineering, University of South Florida (GPA 3.52, Dean's List)",
+    },
     {
       label: "Certifications",
       value: "Certified SOLIDWORKS Associate (CSWA), CSWA Additive Manufacturing",
     },
-    { label: "Involvement", value: "SHPE, SASE, IEEE" },
     {
       label: "Currently",
       value: "Final semester at USF, Smart City Student Volunteer at City of Winter Haven",
     },
+  ],
+  involvement: [
+    { name: "SHPE", href: "https://shpe.org" },
+    { name: "SASE", href: "https://www.saseconnect.org" },
+    { name: "IEEE", href: "https://www.ieee.org" },
   ],
   location: "Tampa, FL (open to relocate)",
   graduation: "Graduating Fall 2026",

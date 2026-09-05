@@ -109,6 +109,26 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
             <dd className="text-sm text-[var(--fg)]">{fact.value}</dd>
           </div>
         ))}
+        <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-4">
+          <dt className="font-mono-tech text-xs uppercase tracking-[0.15em] text-[var(--fg-dim)] sm:w-32 sm:shrink-0">
+            Involvement
+          </dt>
+          <dd className="flex flex-wrap gap-x-1.5 text-sm text-[var(--fg)]">
+            {profile.involvement.map((org, i) => (
+              <span key={org.name}>
+                <a
+                  href={org.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[var(--cyan)] hover:underline"
+                >
+                  {org.name}
+                </a>
+                {i < profile.involvement.length - 1 && ","}
+              </span>
+            ))}
+          </dd>
+        </div>
       </dl>
 
       <button
