@@ -30,6 +30,18 @@ export const profile = {
     { name: "SASE", href: "https://www.saseconnect.org" },
     { name: "IEEE", href: "https://www.ieee.org" },
   ],
+  now: {
+    playing: [
+      {
+        name: "League of Legends",
+        href: "https://op.gg/lol/summoners/na/jackson-cat?queue_type=SOLORANKED",
+      },
+      { name: "Risk of Rain 2" },
+      { name: "Terraria" },
+    ],
+    watching: [{ name: "Sonny Boy" }, { name: "Ergo Proxy" }, { name: "Saiki K" }],
+    reading: [{ name: "Lord of Mysteries 2: Circle of Inevitability (Ch. 16)" }],
+  },
   location: "Tampa, FL (open to relocate)",
   graduation: "Graduating Fall 2026",
   links: {

@@ -6,6 +6,8 @@ import {
 } from "@/data/profile";
 import { projects } from "@/data/projects";
 import FeedCat from "../FeedCat";
+import D20Roller from "../D20Roller";
+import NowPanel from "../NowPanel";
 
 const featuredSlugByTrack: Record<ResumeTrackId, string> = {
   general: "testbench",
@@ -81,7 +83,10 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
             {paragraph}
           </p>
         ))}
-        <FeedCat />
+        <div className="flex flex-wrap items-center gap-2">
+          <FeedCat />
+          <D20Roller />
+        </div>
       </div>
 
       <div>
@@ -130,6 +135,8 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
           </dd>
         </div>
       </dl>
+
+      <NowPanel />
 
       <button
         type="button"
