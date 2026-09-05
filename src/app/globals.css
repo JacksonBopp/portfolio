@@ -1,58 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --scene-bg-1: #0a0618;
-  --scene-bg-2: #1b0f36;
-  --scene-vignette: rgba(0, 0, 0, 0.6);
-  --scene-glow: rgba(255, 199, 120, 0.14);
-  --scene-fg: #f1e6d8;
-  --scene-muted: #b8a9c9;
+  --bg-0: #08090b;
+  --bg-1: #0e1013;
+  --bg-2: #16191d;
+  --panel: #101317;
+  --panel-raised: #14171c;
+  --grid-line: rgba(140, 160, 170, 0.06);
+  --hairline: rgba(180, 200, 210, 0.14);
+  --hairline-strong: rgba(180, 200, 210, 0.26);
 
-  --paper: #f4e8cd;
-  --paper-shade: #e8d5a8;
-  --paper-stain: rgba(154, 116, 61, 0.16);
-  --ink: #281c30;
-  --ink-muted: #6a5a72;
+  --fg: #e7ecee;
+  --fg-muted: #8b96a0;
+  --fg-dim: #566068;
 
-  --cover-1: #17235c;
-  --cover-2: #0c1533;
-  --cover-edge: #05081c;
-  --wax: #8c1f2b;
-  --wax-dark: #530f18;
-  --gold: #d1a44f;
-  --gold-bright: #f6d68e;
-
-  --accent: #7a2e42;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --scene-bg-1: #ded0f0;
-    --scene-bg-2: #b9a3d9;
-    --scene-vignette: rgba(30, 15, 55, 0.18);
-    --scene-glow: rgba(255, 255, 255, 0.4);
-    --scene-fg: #281c30;
-    --scene-muted: #4d3f57;
-  }
+  --amber: #ffb454;
+  --amber-dim: #a9773a;
+  --cyan: #5ad1e6;
+  --cyan-dim: #3a8a99;
+  --red: #ff6b6b;
+  --green: #6fd68a;
 }
 
 @theme inline {
-  --color-background: var(--scene-bg-2);
-  --color-foreground: var(--scene-fg);
-  --color-paper: var(--paper);
-  --color-ink: var(--ink);
-  --color-gold: var(--gold);
-  --color-accent: var(--accent);
+  --color-background: var(--bg-0);
+  --color-foreground: var(--fg);
+  --color-panel: var(--panel);
+  --color-amber: var(--amber);
+  --color-cyan: var(--cyan);
   --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-fell);
-  --font-display: var(--font-cinzel);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  position: relative;
-  background: linear-gradient(160deg, var(--scene-bg-1), var(--scene-bg-2));
-  color: var(--scene-fg);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: var(--bg-0);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   min-height: 100dvh;
   overflow-x: hidden;
 }
@@ -63,149 +54,75 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
-      120% 140% at 50% 0%,
-      var(--scene-glow),
-      transparent 60%
-    ),
-    radial-gradient(55% 45% at 88% 85%, rgba(140, 31, 43, 0.14), transparent 70%),
-    radial-gradient(45% 40% at 8% 85%, rgba(70, 40, 150, 0.16), transparent 70%);
-  animation: ambient-glow 11s ease-in-out infinite;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, black 40%, transparent 100%);
 }
 
-@keyframes ambient-glow {
-  0%,
-  100% {
-    opacity: 0.75;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.03);
-  }
+.font-mono-tech {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  body::before {
-    animation: none;
-  }
+/* Hairline border utility: crisp 1px regardless of transform/zoom */
+.hairline {
+  border: 1px solid var(--hairline);
 }
 
-.book-page-face {
+.hairline-strong {
+  border: 1px solid var(--hairline-strong);
+}
+
+/* Corner-bracket HUD framing */
+.bracket {
   position: relative;
-  background: var(--paper);
-  background-image: radial-gradient(
-      120% 90% at 8% 6%,
-      var(--paper-stain),
-      transparent 40%
-    ),
-    radial-gradient(80% 70% at 95% 100%, var(--paper-stain), transparent 45%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.06), transparent 3%),
-    repeating-linear-gradient(
-      0deg,
-      rgba(107, 95, 79, 0.035) 0px,
-      rgba(107, 95, 79, 0.035) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-  color: var(--ink);
 }
 
-.book-page-face::after {
+.bracket::before,
+.bracket::after {
   content: "";
   position: absolute;
-  inset: 0;
+  width: 10px;
+  height: 10px;
   pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    transparent 92%,
-    rgba(107, 90, 68, 0.18) 100%
-  );
 }
 
-.book-cover-face {
-  background: radial-gradient(
-      140% 120% at 15% 10%,
-      rgba(255, 255, 255, 0.07),
-      transparent 55%
-    ),
-    linear-gradient(155deg, var(--cover-1), var(--cover-2) 65%, var(--cover-edge));
-  color: var(--gold-bright);
-  box-shadow: inset 0 0 0 1px rgba(209, 164, 79, 0.14);
+.bracket::before {
+  top: -1px;
+  left: -1px;
+  border-top: 1.5px solid var(--amber-dim);
+  border-left: 1.5px solid var(--amber-dim);
 }
 
-.wax-seal {
-  background: radial-gradient(
-    circle at 35% 30%,
-    color-mix(in srgb, var(--wax) 85%, white 15%),
-    var(--wax) 45%,
-    var(--wax-dark) 100%
-  );
-  box-shadow:
-    inset 0 2px 3px rgba(255, 255, 255, 0.25),
-    inset 0 -4px 6px rgba(0, 0, 0, 0.45),
-    0 3px 10px rgba(0, 0, 0, 0.5);
-  color: var(--gold-bright);
-}
-
-.flourish {
-  color: color-mix(in srgb, var(--gold) 70%, transparent);
-}
-
-.gold-rule {
-  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+.bracket::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 1.5px solid var(--amber-dim);
+  border-right: 1.5px solid var(--amber-dim);
 }
 
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent;
+  scrollbar-color: var(--hairline-strong) transparent;
 }
 
-.book3d {
-  position: relative;
-  display: block;
-  filter: drop-shadow(0 35px 40px rgba(0, 0, 0, 0.55));
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
 }
 
-.book3d__cover {
-  position: absolute;
-  inset: 0;
-  border-radius: 3px;
-  backface-visibility: hidden;
+.animate-blink {
+  animation: blink 1.6s steps(1, end) infinite;
 }
 
-.book3d__spine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 3px 0 0 3px;
-  background: linear-gradient(90deg, var(--cover-edge), var(--cover-1));
-  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.book3d__spine-label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-family: var(--font-cinzel), serif;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: color-mix(in srgb, var(--gold) 75%, transparent);
-  white-space: nowrap;
-}
-
-.book3d__leaf {
-  position: absolute;
-  inset: 0;
-  border-radius: 2px;
-  background: repeating-linear-gradient(
-    0deg,
-    #ede1c4 0px,
-    #ede1c4 2px,
-    #d9c79a 2px,
-    #d9c79a 3px
-  );
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+@media (prefers-reduced-motion: reduce) {
+  .animate-blink {
+    animation: none;
+  }
 }
