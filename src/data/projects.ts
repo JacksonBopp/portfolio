@@ -48,6 +48,25 @@ export const projects: Project[] = [
     status: "deployed",
   },
   {
+    slug: "i2c-target-controller-verification",
+    name: "I2C Target Controller Verification",
+    role: "Solo project",
+    blurb: "A Verilog I2C target controller verified with coverage-driven testing and mutation analysis.",
+    summary:
+      "A synthesizable I2C target controller with a pointer-addressed register file, verified with a cocotb/Verilator testbench: constrained-random stimulus, functional coverage, bound SystemVerilog assertions, and mutation testing to measure whether the tests actually catch bugs, not just whether they run.",
+    highlights: [
+      "Built a from-scratch, bit-banged I2C master bus-functional model in cocotb (which has no built-in I2C support), driving directed tests plus 200 seeded randomized write/read sequences checked against a Python reference model and the DUT's internal register state",
+      "Reached 100% functional coverage across 6 coverage groups (33 of 33 bins) and bound 3 SystemVerilog protocol assertions to the DUT, verified to catch an injected bug and stay silent on the correct design",
+      "Ran a 10-mutant mutation-testing harness against the design; the first pass caught 9 of 10, and the real gap it found, a master aborting a read mid-byte without the target releasing the bus, led to a new targeted test and a fix to the assertion itself, reaching a 100% kill rate",
+    ],
+    tech: ["Verilog", "SystemVerilog", "cocotb", "Verilator", "Python", "Docker", "GitHub Actions"],
+    links: [
+      { label: "Source", href: "https://github.com/JacksonBopp/i2c-target-controller-verification" },
+    ],
+    tracks: ["embedded", "automation"],
+    status: "complete",
+  },
+  {
     slug: "fpga-audio-message-recorder",
     name: "FPGA Audio Message Recorder",
     role: "Team of 3, sole implementer (university course final)",

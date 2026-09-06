@@ -120,6 +120,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "MATLAB", tier: "working", tracks: ["automation"] },
       { name: "R", tier: "familiar" },
       { name: "Verilog/VHDL", tier: "working", tracks: ["embedded"] },
+      { name: "SystemVerilog", tier: "working", tracks: ["embedded", "automation"] },
       { name: "RISC-V Assembly", tier: "familiar", tracks: ["embedded"] },
     ],
   },
@@ -163,6 +164,8 @@ export const skillCategories: SkillCategory[] = [
       { name: "FPGA", tier: "working", tracks: ["embedded"] },
       { name: "MSP430", tier: "core", tracks: ["embedded", "automation"] },
       { name: "UART/Serial", tier: "core", tracks: ["embedded", "automation"] },
+      { name: "cocotb", tier: "working", tracks: ["embedded", "automation"] },
+      { name: "Verilator", tier: "working", tracks: ["embedded", "automation"] },
     ],
   },
 ];
