@@ -58,7 +58,7 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
             alt={profile.name}
             fill
             sizes="96px"
-            className="object-cover object-[center_20%] grayscale"
+            className="object-cover object-[30%_20%]"
             priority
           />
         </div>

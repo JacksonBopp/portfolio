@@ -40,12 +40,19 @@ export const profile = {
       {
         name: "League of Legends",
         href: "https://op.gg/lol/summoners/na/jackson-cat?queue_type=SOLORANKED",
+        icon: "moba",
       },
-      { name: "Risk of Rain 2" },
-      { name: "Terraria" },
+      { name: "Risk of Rain 2", icon: "storm" },
+      { name: "Terraria", icon: "pickaxe" },
     ],
-    watching: [{ name: "Sonny Boy" }, { name: "Ergo Proxy" }, { name: "Saiki K" }],
-    reading: [{ name: "Lord of Mysteries 2: Circle of Inevitability (Ch. 16)" }],
+    watching: [
+      { name: "Sonny Boy", icon: "drift" },
+      { name: "Ergo Proxy", icon: "circuitEye" },
+      { name: "Saiki K", icon: "psychicSwirl" },
+    ],
+    reading: [
+      { name: "Lord of Mysteries 2: Circle of Inevitability (Ch. 16)", icon: "occultEye" },
+    ],
   },
   location: "Tampa, FL (open to relocate)",
   graduation: "Graduating Fall 2026",
@@ -54,6 +61,8 @@ export const profile = {
     github: "https://github.com/JacksonBopp",
     linkedin: "https://linkedin.com/in/jbopp",
     instagram: "https://instagram.com/JacksonBopp",
+    spotify:
+      "https://open.spotify.com/user/rk1f7pvy3ilo1t3rv56grv4pb?si=b822a2db7a164569",
   },
   githubUsername: "JacksonBopp",
 } as const;
