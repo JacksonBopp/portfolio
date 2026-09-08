@@ -106,14 +106,13 @@ function PsychicSwirlIcon() {
   );
 }
 
-// Lord of Mysteries: a closed book with a watching eye on the cover, for the occult mystery.
+// Lord of Mysteries: an open book with a watching eye, for the occult mystery.
 function OccultEyeIcon() {
   return (
     <IconFrame label="Mystery novel">
-      <rect x="4" y="3" width="16" height="18" rx="1" />
-      <line x1="8" y1="3" x2="8" y2="21" />
-      <path d="M10.5 11.5c1.8-2.2 5.2-2.2 7 0c-1.8 2.2-5.2 2.2-7 0z" />
-      <circle cx="14" cy="11.5" r="1.1" fill="currentColor" stroke="none" />
+      <path d="M3 5.5c2.5-1 5-1 7 .5v13c-2-1.5-4.5-1.5-7-.5v-13z" />
+      <path d="M21 5.5c-2.5-1-5-1-7 .5v13c2-1.5 4.5-1.5 7-.5v-13z" />
+      <circle cx="12" cy="10" r="1.4" />
     </IconFrame>
   );
 }
