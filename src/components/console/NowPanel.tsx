@@ -2,14 +2,14 @@ import { profile } from "@/data/profile";
 import SpotifyNowPlaying from "./SpotifyNowPlaying";
 import NowIcon, { type NowIconKey } from "./NowIcons";
 
-type NowItem = { name: string; href?: string; icon?: NowIconKey };
+type NowItem = { name: string; href?: string; icon?: NowIconKey; secretTripleClick?: boolean };
 
 function NowList({ items }: { items: readonly NowItem[] }) {
   return (
     <ul className="mt-1.5 flex flex-col gap-1">
       {items.map((item) => (
         <li key={item.name} className="flex items-center gap-1.5 text-sm text-[var(--fg)]">
-          <NowIcon icon={item.icon} />
+          <NowIcon icon={item.icon} secretTripleClick={item.secretTripleClick} />
           {item.href ? (
             <a
               href={item.href}

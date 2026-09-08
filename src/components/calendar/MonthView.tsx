@@ -19,7 +19,7 @@ function ymd(year: number, month: number, day: number): string {
   return `${year}-${pad(month)}-${pad(day)}`;
 }
 
-export default function MonthView() {
+export default function MonthView({ refreshSignal }: { refreshSignal?: number } = {}) {
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
@@ -36,8 +36,11 @@ export default function MonthView() {
 
   useEffect(() => {
     reload();
+    // Also refetch whenever a sibling component (e.g. converting a to-do
+    // into an event) bumps refreshSignal, since this component has no
+    // other way to know the events table changed underneath it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [year, month]);
+  }, [year, month, refreshSignal]);
 
   function changeMonth(delta: number) {
     let m = month + delta;
@@ -67,8 +70,8 @@ export default function MonthView() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-0)] p-6 text-[var(--fg)]">
-      <div className="mx-auto max-w-3xl">
+    <div className="hairline rounded p-5">
+      <div>
         <div className="flex items-center justify-between">
           <button
             onClick={() => changeMonth(-1)}

@@ -1,5 +1,7 @@
 "use server";
 
+import { headers } from "next/headers";
+import { after } from "next/server";
 import { verifyGatePassword, setGateCookie, hasValidGateCookie } from "@/lib/privateGate";
 import {
   listEventsForMonth,
@@ -8,6 +10,16 @@ import {
   deleteEvent,
   type CalendarEvent,
 } from "@/lib/calendarEvents";
+import {
+  listTodos,
+  createTodo,
+  setTodoDone,
+  deleteTodo,
+  getTodoText,
+  type Todo,
+} from "@/lib/todos";
+import { getCatCare, markFed, markWatered, type CatCare } from "@/lib/catCare";
+import { recordFailedAttempt, listRecentAttempts, type GateAttempt } from "@/lib/gateAttempts";
 
 export type UnlockState = { error?: string };
 
@@ -31,6 +43,11 @@ export async function unlockGate(
 
   const password = String(formData.get("password") ?? "");
   if (!verifyGatePassword(password)) {
+    const headerList = await headers();
+    const ip = headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    const userAgent = headerList.get("user-agent") ?? "unknown";
+    const sendEmail = await recordFailedAttempt(ip, userAgent);
+    after(sendEmail);
     return { error: "Wrong password." };
   }
   await setGateCookie();
@@ -70,4 +87,54 @@ export async function saveEvent(input: {
 export async function removeEvent(id: number): Promise<void> {
   await requireAuth();
   await deleteEvent(id);
+}
+
+export async function fetchTodos(): Promise<Todo[]> {
+  await requireAuth();
+  return listTodos();
+}
+
+export async function addTodo(text: string): Promise<void> {
+  await requireAuth();
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  await createTodo(trimmed);
+}
+
+export async function setTodoDoneAction(id: number, done: boolean): Promise<void> {
+  await requireAuth();
+  await setTodoDone(id, done);
+}
+
+export async function removeTodo(id: number): Promise<void> {
+  await requireAuth();
+  await deleteTodo(id);
+}
+
+export async function convertTodoToEvent(todoId: number, eventDate: string): Promise<void> {
+  await requireAuth();
+  const text = await getTodoText(todoId);
+  if (!text) return;
+  await createEvent({ title: text, eventDate, eventTime: null, notes: null });
+  await deleteTodo(todoId);
+}
+
+export async function fetchCatCare(): Promise<CatCare> {
+  await requireAuth();
+  return getCatCare();
+}
+
+export async function markCatFed(): Promise<void> {
+  await requireAuth();
+  await markFed();
+}
+
+export async function markCatWatered(): Promise<void> {
+  await requireAuth();
+  await markWatered();
+}
+
+export async function fetchRecentAttempts(): Promise<GateAttempt[]> {
+  await requireAuth();
+  return listRecentAttempts();
 }

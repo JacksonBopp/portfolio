@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
+import { useRef } from "react";
 
 export type NowIconKey =
   | "moba"
@@ -126,8 +127,42 @@ const ICONS: Record<NowIconKey, () => ReactNode> = {
   occultEye: OccultEyeIcon,
 };
 
-export default function NowIcon({ icon }: { icon?: NowIconKey }) {
+const TRIPLE_CLICK_WINDOW_MS = 600;
+
+export default function NowIcon({
+  icon,
+  secretTripleClick,
+}: {
+  icon?: NowIconKey;
+  /** Three clicks within TRIPLE_CLICK_WINDOW_MS navigate to /api/cat-door,
+   * a fixed public endpoint name that redirects server-side to whatever
+   * PRIVATE_GATE_PATH currently is. Nothing about the real secret path
+   * lives in this client bundle. */
+  secretTripleClick?: boolean;
+}) {
+  const clickTimes = useRef<number[]>([]);
+
   if (!icon) return null;
   const Icon = ICONS[icon];
-  return <Icon />;
+
+  if (!secretTripleClick) {
+    return <Icon />;
+  }
+
+  function handleClick() {
+    const now = Date.now();
+    clickTimes.current = [...clickTimes.current, now].filter(
+      (t) => now - t < TRIPLE_CLICK_WINDOW_MS,
+    );
+    if (clickTimes.current.length >= 3) {
+      clickTimes.current = [];
+      window.location.href = "/api/cat-door";
+    }
+  }
+
+  return (
+    <span onClick={handleClick} className="cursor-pointer">
+      <Icon />
+    </span>
+  );
 }

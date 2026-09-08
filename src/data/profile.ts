@@ -51,7 +51,11 @@ export const profile = {
       { name: "Saiki K", icon: "psychicSwirl" },
     ],
     reading: [
-      { name: "Lord of Mysteries 2: Circle of Inevitability (Ch. 16)", icon: "occultEye" },
+      {
+        name: "Lord of Mysteries 2: Circle of Inevitability (Ch. 16)",
+        icon: "occultEye",
+        secretTripleClick: true,
+      },
     ],
   },
   location: "Tampa, FL (open to relocate)",
