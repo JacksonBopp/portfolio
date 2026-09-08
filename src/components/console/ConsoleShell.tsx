@@ -12,6 +12,7 @@ import StatusStrip from "./StatusStrip";
 import CommandPalette from "./CommandPalette";
 import PeekingCat from "./PeekingCat";
 import CatKnockdown from "./CatKnockdown";
+import PettableCat from "./PettableCat";
 import MouseChase from "./MouseChase";
 import SoundToggle from "./SoundToggle";
 import { playBlip } from "./sound";
@@ -29,9 +30,12 @@ export default function ConsoleShell() {
   const initialProject = searchParams.get("project");
 
   const [booted, setBooted] = useState(false);
-  const [section, setSection] = useState<Section>(
-    initialProject ? "projects" : "overview",
-  );
+  // Always start on Overview on a fresh load/refresh, even if the URL still
+  // has a ?project= from a previous session. selectedProject below still
+  // honors that param, so a shared project link still shows the right
+  // project once you click into Projects, it's just not the very first
+  // thing you see on a raw refresh.
+  const [section, setSection] = useState<Section>("overview");
   const [mode, setMode] = useState<ResumeTrackId>("general");
   const [selectedProject, setSelectedProject] = useState<string | null>(
     initialProject && projects.some((p) => p.slug === initialProject)
@@ -208,6 +212,7 @@ export default function ConsoleShell() {
 
       <PeekingCat />
       <CatKnockdown />
+      <PettableCat />
       <MouseChase />
     </div>
   );

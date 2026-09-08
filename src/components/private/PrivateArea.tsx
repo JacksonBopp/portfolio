@@ -5,12 +5,15 @@ import MonthView from "@/components/calendar/MonthView";
 import TodoList from "./TodoList";
 import SleepingCat from "./SleepingCat";
 import AccessLog from "./AccessLog";
+import StatusEditor from "./StatusEditor";
 
 export default function PrivateArea() {
   const [calendarRefreshSignal, setCalendarRefreshSignal] = useState(0);
 
   return (
     <>
+      <StatusEditor />
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <SleepingCat />
         <TodoList onEventCreated={() => setCalendarRefreshSignal((n) => n + 1)} />

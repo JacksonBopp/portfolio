@@ -70,12 +70,25 @@ export default function CommandPalette({
   }, [query]);
 
   const hadCat = useRef(false);
+  const hadCatFall = useRef(false);
+  const hadCatChase = useRef(false);
   useEffect(() => {
-    const hasCat = query.toLowerCase().includes("cat");
-    if (hasCat && !hadCat.current) {
+    const q = query.toLowerCase();
+    const hasCatFall = q.includes("cat fall");
+    const hasCatChase = q.includes("cat chase");
+    const hasCat = q.includes("cat");
+
+    if (hasCatFall && !hadCatFall.current) {
+      window.dispatchEvent(new Event("cat:fall"));
+    } else if (hasCatChase && !hadCatChase.current) {
+      window.dispatchEvent(new Event("cat:chase"));
+    } else if (hasCat && !hasCatFall && !hasCatChase && !hadCat.current) {
       window.dispatchEvent(new Event("cat:summon"));
     }
+
     hadCat.current = hasCat;
+    hadCatFall.current = hasCatFall;
+    hadCatChase.current = hasCatChase;
   }, [query]);
 
   if (!open) return null;

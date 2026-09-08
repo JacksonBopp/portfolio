@@ -50,4 +50,18 @@ await sql`
   )
 `;
 
-console.log("todos, cat_care, and gate_attempts tables ready");
+await sql`
+  CREATE TABLE IF NOT EXISTS site_status (
+    id INT PRIMARY KEY DEFAULT 1,
+    status TEXT,
+    CHECK (id = 1)
+  )
+`;
+
+await sql`
+  INSERT INTO site_status (id, status)
+  VALUES (1, 'Final semester at USF, Smart City Student Volunteer at City of Winter Haven')
+  ON CONFLICT (id) DO NOTHING
+`;
+
+console.log("todos, cat_care, gate_attempts, and site_status tables ready");

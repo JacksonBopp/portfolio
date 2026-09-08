@@ -20,7 +20,6 @@ export default function CatKnockdown() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [dropX, setDropX] = useState(0);
   const [dropY, setDropY] = useState(0);
-  const [enterFromLeft, setEnterFromLeft] = useState(true);
   const peekingCatVisible = useRef(false);
   const phaseRef = useRef<Phase>("idle");
 
@@ -55,7 +54,6 @@ export default function CatKnockdown() {
     const rect = chip.getBoundingClientRect();
     setDropX(rect.left + rect.width / 2);
     setDropY(rect.top);
-    setEnterFromLeft(Math.random() < 0.5);
 
     setPhase("falling");
 
@@ -111,6 +109,16 @@ export default function CatKnockdown() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Manual trigger: searching "cat fall" in the command palette.
+  useEffect(() => {
+    function handleManualFall() {
+      if (phaseRef.current !== "idle") return;
+      runSequence();
+    }
+    window.addEventListener("cat:fall", handleManualFall);
+    return () => window.removeEventListener("cat:fall", handleManualFall);
+  }, [runSequence]);
+
   if (phase === "idle") return null;
 
   return (
@@ -144,8 +152,11 @@ export default function CatKnockdown() {
           <motion.div
             className="absolute"
             style={{ top: dropY - 30 }}
-            initial={{ x: enterFromLeft ? -140 : (typeof window !== "undefined" ? window.innerWidth + 40 : 1200) }}
-            animate={{ x: dropX - 47 }}
+            initial={{
+              x: typeof window !== "undefined" ? window.innerWidth + 40 : 1200,
+              scaleX: -1,
+            }}
+            animate={{ x: dropX - 47, scaleX: -1 }}
             transition={{ duration: 1.1, ease: "easeInOut" }}
           >
             <WalkingCatSilhouette />
@@ -158,7 +169,7 @@ export default function CatKnockdown() {
             style={{ top: dropY - 30 }}
             initial={{ x: dropX - 47 }}
             animate={{
-              x: enterFromLeft ? -140 : (typeof window !== "undefined" ? window.innerWidth + 40 : 1200),
+              x: typeof window !== "undefined" ? window.innerWidth + 40 : 1200,
             }}
             transition={{ duration: 0.9, ease: "easeIn" }}
           >

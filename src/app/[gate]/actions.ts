@@ -20,6 +20,7 @@ import {
 } from "@/lib/todos";
 import { getCatCare, markFed, markWatered, type CatCare } from "@/lib/catCare";
 import { recordFailedAttempt, listRecentAttempts, type GateAttempt } from "@/lib/gateAttempts";
+import { getStatus, setStatus } from "@/lib/siteStatus";
 
 export type UnlockState = { error?: string };
 
@@ -137,4 +138,14 @@ export async function markCatWatered(): Promise<void> {
 export async function fetchRecentAttempts(): Promise<GateAttempt[]> {
   await requireAuth();
   return listRecentAttempts();
+}
+
+export async function fetchStatus(): Promise<string> {
+  await requireAuth();
+  return getStatus();
+}
+
+export async function updateStatus(status: string): Promise<void> {
+  await requireAuth();
+  await setStatus(status.trim());
 }

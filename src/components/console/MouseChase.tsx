@@ -20,13 +20,20 @@ export default function MouseChase() {
     }
     if (reducedMotion) return;
 
-    const id = setInterval(() => {
+    function trigger() {
       setLeftToRight(Math.random() > 0.5);
       setRunning(true);
       setTimeout(() => setRunning(false), RUN_DURATION * 1000 + 200);
-    }, INTERVAL);
+    }
 
-    return () => clearInterval(id);
+    const id = setInterval(trigger, INTERVAL);
+
+    // Manual trigger: searching "cat chase" in the command palette.
+    window.addEventListener("cat:chase", trigger);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("cat:chase", trigger);
+    };
   }, []);
 
   if (!running) return null;

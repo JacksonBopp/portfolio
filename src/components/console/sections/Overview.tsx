@@ -9,6 +9,7 @@ import { projects } from "@/data/projects";
 import FeedCat from "../FeedCat";
 import D20Roller from "../D20Roller";
 import NowPanel from "../NowPanel";
+import LiveStatus from "../LiveStatus";
 
 const featuredSlugByTrack: Record<ResumeTrackId, string> = {
   general: "testbench",
@@ -93,6 +94,13 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
         <div className="flex flex-wrap items-center gap-2">
           <FeedCat />
           <D20Roller />
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("cat:pet"))}
+            className="inline-flex w-fit items-center gap-1.5 rounded border border-[var(--hairline)] px-2.5 py-1 font-mono-tech text-xs text-[var(--fg-muted)] transition hover:border-[var(--amber-dim)] hover:text-[var(--amber)] active:scale-95"
+          >
+            🐾 pet the cat
+          </button>
         </div>
       </div>
 
@@ -119,7 +127,13 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
             <dt className="font-mono-tech text-xs uppercase tracking-[0.15em] text-[var(--fg-dim)] sm:w-32 sm:shrink-0">
               {fact.label}
             </dt>
-            <dd className="text-sm text-[var(--fg)]">{fact.value}</dd>
+            <dd className="text-sm text-[var(--fg)]">
+              {fact.label === "Currently" ? (
+                <LiveStatus fallback={fact.value} />
+              ) : (
+                fact.value
+              )}
+            </dd>
           </div>
         ))}
         <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-4">
