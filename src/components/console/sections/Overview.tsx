@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   profile,
   resumeTracks,
@@ -51,10 +52,16 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-        <div
-          aria-hidden="true"
-          className="hairline bracket h-24 w-24 shrink-0 rounded"
-        />
+        <div className="hairline bracket relative h-24 w-24 shrink-0 overflow-hidden rounded">
+          <Image
+            src="/headshot.jpg"
+            alt={profile.name}
+            fill
+            sizes="96px"
+            className="object-cover object-[center_20%] grayscale"
+            priority
+          />
+        </div>
 
         <div>
           <p className="font-mono-tech text-xs uppercase tracking-[0.2em] text-[var(--amber)]">
