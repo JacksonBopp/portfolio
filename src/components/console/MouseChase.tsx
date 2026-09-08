@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import WalkingCatSilhouette from "./WalkingCatSilhouette";
+import { acquireCat, releaseCat } from "./catActivity";
 
 const INTERVAL = 90_000;
 const RUN_DURATION = 2.6;
@@ -21,9 +22,13 @@ export default function MouseChase() {
     if (reducedMotion) return;
 
     function trigger() {
+      if (!acquireCat()) return; // another cat easter egg is already out
       setLeftToRight(Math.random() > 0.5);
       setRunning(true);
-      setTimeout(() => setRunning(false), RUN_DURATION * 1000 + 200);
+      setTimeout(() => {
+        setRunning(false);
+        releaseCat();
+      }, RUN_DURATION * 1000 + 200);
     }
 
     const id = setInterval(trigger, INTERVAL);

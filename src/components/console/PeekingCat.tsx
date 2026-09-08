@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { acquireCat, releaseCat } from "./catActivity";
 
 type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "left" | "right";
 
@@ -17,7 +18,7 @@ const CAT_HALF = 30;
 const EDGE_OFFSET = 24;
 const PROXIMITY_RADIUS = 150;
 
-export function CatSilhouette() {
+export function CatSilhouette({ dizzy = false }: { dizzy?: boolean } = {}) {
   return (
     <svg width="60" height="84" viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">
       {/* tail */}
@@ -39,8 +40,17 @@ export function CatSilhouette() {
         strokeWidth="0.6"
       />
       {/* eyes */}
-      <circle cx="24" cy="40" r="4" fill="var(--amber)" />
-      <circle cx="46" cy="40" r="4" fill="var(--amber)" />
+      {dizzy ? (
+        <>
+          <path d="M20 37l8 6M28 37l-8 6" stroke="var(--amber)" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M42 37l8 6M50 37l-8 6" stroke="var(--amber)" strokeWidth="1.8" strokeLinecap="round" />
+        </>
+      ) : (
+        <>
+          <circle cx="24" cy="40" r="4" fill="var(--amber)" />
+          <circle cx="46" cy="40" r="4" fill="var(--amber)" />
+        </>
+      )}
     </svg>
   );
 }
@@ -103,15 +113,15 @@ export default function PeekingCat() {
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const showTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Lets other cat-related easter eggs (e.g. the Core Focus knockdown gag)
-  // know when this ambient cat is already out, so they don't overlap it.
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent("cat:visibility", { detail: { visible } }));
-  }, [visible]);
-
   const scheduleNext = useCallback(() => {
     const delay = 10_000 + Math.random() * 15_000;
     showTimer.current = setTimeout(() => {
+      if (!acquireCat()) {
+        // Something else is out right now; try again shortly instead of
+        // waiting for the next full random interval.
+        showTimer.current = setTimeout(() => scheduleNext(), 3000);
+        return;
+      }
       setPosition(POSITIONS[Math.floor(Math.random() * POSITIONS.length)]);
       setVisible(true);
       hideTimer.current = setTimeout(retreat, 2800);
@@ -122,11 +132,13 @@ export default function PeekingCat() {
   const retreat = useCallback(() => {
     clearTimeout(hideTimer.current);
     setVisible(false);
+    releaseCat();
     scheduleNext();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const summonNow = useCallback(() => {
+    if (!acquireCat()) return; // another cat is already out
     clearTimeout(showTimer.current);
     clearTimeout(hideTimer.current);
     setPosition(POSITIONS[Math.floor(Math.random() * POSITIONS.length)]);

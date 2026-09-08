@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { playBlip } from "./sound";
 import WalkingCatSilhouette from "./WalkingCatSilhouette";
+import { acquireCat, releaseCat } from "./catActivity";
 
 const TREATS = ["🐟", "🍗", "🥛", "🍤", "🧀"];
 const FULL_AFTER = 4;
@@ -18,6 +19,7 @@ export default function FeedCat() {
 
   function feed() {
     if (phase !== "idle") return;
+    if (!acquireCat()) return; // another cat easter egg is already out
     playBlip();
     setTreat(TREATS[Math.floor(Math.random() * TREATS.length)]);
     setTargetX(window.innerWidth / 2 - 47);
@@ -29,7 +31,10 @@ export default function FeedCat() {
     setPhase("walking-in");
     setTimeout(() => setPhase(isFull ? "full" : "eating"), 1300);
     setTimeout(() => setPhase("walking-out"), isFull ? 2600 : 2200);
-    setTimeout(() => setPhase("idle"), isFull ? 3900 : 3500);
+    setTimeout(() => {
+      setPhase("idle");
+      releaseCat();
+    }, isFull ? 3900 : 3500);
   }
 
   const walking = phase === "walking-in" || phase === "walking-out";

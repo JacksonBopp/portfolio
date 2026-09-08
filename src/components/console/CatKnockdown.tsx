@@ -4,40 +4,28 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { CatSilhouette } from "./PeekingCat";
 import WalkingCatSilhouette from "./WalkingCatSilhouette";
+import { acquireCat, releaseCat } from "./catActivity";
 
 const CYCLE_MS = 2 * 60 * 1000;
 const TARGET_SKILL = "Linux";
+const FALL_DURATION_MS = 900;
 
-type Phase =
-  | "idle"
-  | "falling"
-  | "exiting-down"
-  | "gap"
-  | "entering"
-  | "exiting-side";
+type Phase = "idle" | "falling" | "gap" | "entering" | "exiting-side";
 
 export default function CatKnockdown() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [dropX, setDropX] = useState(0);
   const [dropY, setDropY] = useState(0);
-  const peekingCatVisible = useRef(false);
+  const [fallToY, setFallToY] = useState(0);
   const phaseRef = useRef<Phase>("idle");
 
   useEffect(() => {
     phaseRef.current = phase;
   }, [phase]);
 
-  useEffect(() => {
-    function handleVisibility(e: Event) {
-      peekingCatVisible.current = (e as CustomEvent).detail.visible;
-    }
-    window.addEventListener("cat:visibility", handleVisibility);
-    return () => window.removeEventListener("cat:visibility", handleVisibility);
-  }, []);
-
-  const knockOffChip = useCallback((chip: HTMLElement) => {
-    chip.style.transition = "transform 0.4s ease-in, opacity 0.4s ease-in";
-    chip.style.transform = "translateY(28px) rotate(-18deg)";
+  const knockOffChip = useCallback((chip: HTMLElement, fallDistance: number) => {
+    chip.style.transition = `transform ${FALL_DURATION_MS}ms ease-in, opacity ${FALL_DURATION_MS}ms ease-in`;
+    chip.style.transform = `translateY(${fallDistance}px) rotate(-25deg)`;
     chip.style.opacity = "0";
   }, []);
 
@@ -50,43 +38,46 @@ export default function CatKnockdown() {
   const runSequence = useCallback(() => {
     const chip = document.querySelector<HTMLElement>(`[data-skill-chip="${TARGET_SKILL}"]`);
     if (!chip) return;
+    if (!acquireCat()) return; // another cat easter egg is already active
 
     const rect = chip.getBoundingClientRect();
+    const viewportH = window.innerHeight;
     setDropX(rect.left + rect.width / 2);
     setDropY(rect.top);
+    setFallToY(viewportH + 100);
 
     setPhase("falling");
 
+    // Knock the chip off partway through the cat's fall, roughly when the
+    // cat visually reaches it, then let both keep falling off the bottom.
+    const knockDelay = Math.round(FALL_DURATION_MS * ((rect.top + 150) / (viewportH + 250)));
     const t1 = setTimeout(() => {
-      knockOffChip(chip);
-    }, 500);
+      knockOffChip(chip, viewportH - rect.top + 150);
+    }, knockDelay);
 
     const t2 = setTimeout(() => {
-      setPhase("exiting-down");
-    }, 900);
+      setPhase("gap");
+    }, FALL_DURATION_MS + 200);
 
     const t3 = setTimeout(() => {
-      setPhase("gap");
-    }, 1500);
+      setPhase("entering");
+    }, FALL_DURATION_MS + 1700);
 
     const t4 = setTimeout(() => {
-      setPhase("entering");
-    }, 3000);
-
-    const t5 = setTimeout(() => {
       const current = document.querySelector<HTMLElement>(`[data-skill-chip="${TARGET_SKILL}"]`);
       if (current) restoreChip(current);
-    }, 4100);
+    }, FALL_DURATION_MS + 2800);
+
+    const t5 = setTimeout(() => {
+      setPhase("exiting-side");
+    }, FALL_DURATION_MS + 3000);
 
     const t6 = setTimeout(() => {
-      setPhase("exiting-side");
-    }, 4300);
-
-    const t7 = setTimeout(() => {
       setPhase("idle");
-    }, 5100);
+      releaseCat();
+    }, FALL_DURATION_MS + 3800);
 
-    return () => [t1, t2, t3, t4, t5, t6, t7].forEach(clearTimeout);
+    return () => [t1, t2, t3, t4, t5, t6].forEach(clearTimeout);
   }, [knockOffChip, restoreChip]);
 
   useEffect(() => {
@@ -99,7 +90,6 @@ export default function CatKnockdown() {
     if (reducedMotion) return;
 
     const interval = setInterval(() => {
-      if (peekingCatVisible.current) return; // don't overlap the ambient peeking cat
       if (phaseRef.current !== "idle") return; // don't overlap ourselves
       runSequence();
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,29 +112,17 @@ export default function CatKnockdown() {
   if (phase === "idle") return null;
 
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-40">
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-40 overflow-hidden">
       <AnimatePresence>
         {phase === "falling" && (
           <motion.div
             className="absolute"
             style={{ left: dropX - 30, top: 0 }}
             initial={{ y: -150 }}
-            animate={{ y: dropY - 60 }}
-            transition={{ duration: 0.5, ease: "easeIn" }}
+            animate={{ y: fallToY }}
+            transition={{ duration: FALL_DURATION_MS / 1000, ease: "easeIn" }}
           >
-            <CatSilhouette />
-          </motion.div>
-        )}
-
-        {phase === "exiting-down" && (
-          <motion.div
-            className="absolute"
-            style={{ left: dropX - 30, top: dropY - 60 }}
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 0, y: 40 }}
-            transition={{ duration: 0.5 }}
-          >
-            <CatSilhouette />
+            <CatSilhouette dizzy />
           </motion.div>
         )}
 

@@ -15,37 +15,64 @@ function timeSince(iso: string | null): string {
   return `${days}d ago`;
 }
 
+// Ronnie: a real gray tabby, so this one breaks from the site's amber/cyan
+// palette on purpose and uses his actual coloring instead, since this
+// panel is only ever seen by the one person who knows what he looks like.
 function SleepingCatSvg() {
+  const fur = "#8a8171";
+  const furDark = "#6b6255";
+  const stripe = "#3c362c";
+  const ear = "#c99283";
+
   return (
     <svg width="120" height="70" viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
       {/* bed */}
-      <ellipse cx="70" cy="66" rx="66" ry="12" fill="none" stroke="var(--amber-dim)" strokeWidth="2" />
-      {/* tail, curled around the body */}
+      <ellipse cx="70" cy="66" rx="66" ry="12" fill="none" stroke="var(--hairline-strong)" strokeWidth="2" />
+      {/* tail, curled around the body, with a few tabby rings */}
       <path
         d="M110 58 C126 54 126 38 112 34"
-        stroke="var(--amber-dim)"
+        stroke={fur}
         strokeWidth="7"
         strokeLinecap="round"
         fill="none"
       />
+      <path d="M113 56 l4 -3M116 49 l4.5 -2M116 42 l4.5 -1" stroke={stripe} strokeWidth="1.4" strokeLinecap="round" />
       {/* body, lying down */}
-      <ellipse cx="70" cy="50" rx="46" ry="20" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
-      {/* ears */}
-      <polygon points="24,34 36,34 28,20" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
-      <polygon points="44,32 56,32 52,18" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
+      <ellipse cx="70" cy="50" rx="46" ry="20" fill={fur} stroke={furDark} strokeWidth="0.8" />
+      {/* body stripes */}
+      <path d="M46 34 q4 8 0 16" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M58 32 q5 10 0 20" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M70 31 q5 11 0 22" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M82 33 q5 10 0 20" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
+      {/* ears, pink inner */}
+      <polygon points="24,34 36,34 28,20" fill={fur} stroke={furDark} strokeWidth="0.8" />
+      <polygon points="26,32 33,32 28.5,24" fill={ear} />
+      <polygon points="44,32 56,32 52,18" fill={fur} stroke={furDark} strokeWidth="0.8" />
+      <polygon points="46,30 53,30 49.5,22" fill={ear} />
       {/* head */}
-      <ellipse cx="38" cy="44" rx="18" ry="15" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
-      {/* closed eyes */}
-      <path d="M30 44 q4 3 8 0" stroke="var(--amber)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M42 44 q4 3 8 0" stroke="var(--amber)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <ellipse cx="38" cy="44" rx="18" ry="15" fill={fur} stroke={furDark} strokeWidth="0.8" />
+      {/* forehead "M" tabby marking */}
+      <path
+        d="M30 33 l2 5 -2 4 M36 31 l0 5 M42 33 l-2 5 2 4"
+        stroke={stripe}
+        strokeWidth="1.3"
+        fill="none"
+        strokeLinecap="round"
+      />
+      {/* cheek stripes */}
+      <path d="M22 46 l6 1M22 50 l6 0" stroke={stripe} strokeWidth="1.2" strokeLinecap="round" />
+      <path d="M54 46 l-6 1M54 50 l-6 0" stroke={stripe} strokeWidth="1.2" strokeLinecap="round" />
+      {/* closed eyes, greenish like the real thing */}
+      <path d="M30 44 q4 3 8 0" stroke="#7a9463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M42 44 q4 3 8 0" stroke="#7a9463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
       {/* zzz */}
-      <text x="86" y="24" fill="var(--amber-dim)" fontSize="10" fontFamily="var(--font-kalam)">
+      <text x="86" y="24" fill="var(--fg-dim)" fontSize="10" fontFamily="var(--font-kalam)">
         z
       </text>
-      <text x="94" y="16" fill="var(--amber-dim)" fontSize="13" fontFamily="var(--font-kalam)">
+      <text x="94" y="16" fill="var(--fg-dim)" fontSize="13" fontFamily="var(--font-kalam)">
         z
       </text>
-      <text x="104" y="7" fill="var(--amber-dim)" fontSize="16" fontFamily="var(--font-kalam)">
+      <text x="104" y="7" fill="var(--fg-dim)" fontSize="16" fontFamily="var(--font-kalam)">
         z
       </text>
     </svg>
