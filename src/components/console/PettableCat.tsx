@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { releaseCat, requestCatSlot } from "./catActivity";
+import { CAT_EAR_INNER, CAT_EYE, CAT_FUR, CAT_FUR_DARK, CAT_HIGHLIGHT } from "./catPalette";
 
 type Mood = "neutral" | "happy" | "sad";
 type Phase = "idle" | "sitting" | "jumping" | "leaving";
@@ -16,50 +17,50 @@ function SittingCatFace({ mood }: { mood: Mood }) {
       {/* tail, curled in close and fluffy */}
       <path
         d="M86 94 C102 90 102 72 90 64 C96 74 94 86 80 92"
-        fill="#0d0f12"
-        stroke="var(--amber-dim)"
-        strokeWidth="0.8"
+        fill={CAT_FUR}
       />
       {/* body, chubby "loaf" shape */}
-      <ellipse cx="60" cy="90" rx="34" ry="22" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <ellipse cx="60" cy="90" rx="34" ry="22" fill={CAT_FUR} />
+      {/* belly shading */}
+      <ellipse cx="60" cy="98" rx="20" ry="10" fill={CAT_FUR_DARK} opacity="0.5" />
       {/* front paws, tucked in close */}
-      <ellipse cx="48" cy="108" rx="9" ry="7.5" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <ellipse cx="70" cy="108" rx="9" ry="7.5" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <ellipse cx="48" cy="108" rx="9" ry="7.5" fill={CAT_FUR} />
+      <ellipse cx="70" cy="108" rx="9" ry="7.5" fill={CAT_FUR} />
       {/* ears, small and rounded */}
-      <path d="M30 38 Q28 18 40 12 Q46 22 42 40 Z" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <path d="M34 34 Q34 22 40 18 Q42 26 40 35 Z" fill="var(--amber-dim)" opacity="0.35" />
-      <path d="M90 38 Q92 18 80 12 Q74 22 78 40 Z" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <path d="M86 34 Q86 22 80 18 Q78 26 80 35 Z" fill="var(--amber-dim)" opacity="0.35" />
+      <path d="M30 38 Q28 18 40 12 Q46 22 42 40 Z" fill={CAT_FUR} />
+      <path d="M34 34 Q34 22 40 18 Q42 26 40 35 Z" fill={CAT_EAR_INNER} />
+      <path d="M90 38 Q92 18 80 12 Q74 22 78 40 Z" fill={CAT_FUR} />
+      <path d="M86 34 Q86 22 80 18 Q78 26 80 35 Z" fill={CAT_EAR_INNER} />
       {/* head, big and round for a cuter look */}
-      <circle cx="60" cy="56" r="34" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <circle cx="60" cy="56" r="34" fill={CAT_FUR} />
       {/* whiskers */}
-      <path d="M30 58 h-13M30 62 h-14M31 66 h-12" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
-      <path d="M90 58 h13M90 62 h14M89 66 h12" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
+      <path d="M30 58 h-13M30 62 h-14M31 66 h-12" stroke={CAT_FUR_DARK} strokeWidth="1" strokeLinecap="round" />
+      <path d="M90 58 h13M90 62 h14M89 66 h12" stroke={CAT_FUR_DARK} strokeWidth="1" strokeLinecap="round" />
       {/* blush */}
-      <circle cx="40" cy="66" r="5" fill="var(--red)" opacity="0.25" />
-      <circle cx="80" cy="66" r="5" fill="var(--red)" opacity="0.25" />
+      <circle cx="40" cy="66" r="5" fill={CAT_EAR_INNER} opacity="0.7" />
+      <circle cx="80" cy="66" r="5" fill={CAT_EAR_INNER} opacity="0.7" />
 
       {mood === "happy" ? (
         <>
-          <path d="M42 56 q7 7 14 0" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-          <path d="M64 56 q7 7 14 0" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-          <path d="M53 68 q7 6 14 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-          <path d="M60 8 l3.5 7 7 1 -5 4.5 1 7 -6.5 -3.5 -6.5 3.5 1 -7 -5 -4.5 7 -1 z" fill="var(--red)" opacity="0.85" />
+          <path d="M42 56 q7 7 14 0" stroke={CAT_EYE} strokeWidth="2.6" fill="none" strokeLinecap="round" />
+          <path d="M64 56 q7 7 14 0" stroke={CAT_EYE} strokeWidth="2.6" fill="none" strokeLinecap="round" />
+          <path d="M53 68 q7 6 14 0" stroke={CAT_EYE} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          <path d="M60 8 l3.5 7 7 1 -5 4.5 1 7 -6.5 -3.5 -6.5 3.5 1 -7 -5 -4.5 7 -1 z" fill="var(--red)" opacity="0.9" />
         </>
       ) : mood === "sad" ? (
         <>
-          <path d="M43 58 q7 -6 12 -1" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-          <path d="M65 57 q7 -6 12 -1" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
-          <path d="M52 74 q8 -5 16 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          <path d="M43 58 q7 -6 12 -1" stroke={CAT_EYE} strokeWidth="2.6" fill="none" strokeLinecap="round" />
+          <path d="M65 57 q7 -6 12 -1" stroke={CAT_EYE} strokeWidth="2.6" fill="none" strokeLinecap="round" />
+          <path d="M52 74 q8 -5 16 0" stroke={CAT_EYE} strokeWidth="1.8" fill="none" strokeLinecap="round" />
         </>
       ) : (
         <>
-          <circle cx="47" cy="56" r="5.2" fill="var(--amber)" />
-          <circle cx="45.5" cy="54" r="1.5" fill="#0d0f12" />
-          <circle cx="73" cy="56" r="5.2" fill="var(--amber)" />
-          <circle cx="71.5" cy="54" r="1.5" fill="#0d0f12" />
-          <path d="M58 64 l2 2 2 -2" stroke="var(--amber)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M56 69 q4 3 8 0" stroke="var(--amber)" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+          <circle cx="47" cy="56" r="5.2" fill={CAT_EYE} />
+          <circle cx="45.5" cy="54" r="1.5" fill={CAT_HIGHLIGHT} />
+          <circle cx="73" cy="56" r="5.2" fill={CAT_EYE} />
+          <circle cx="71.5" cy="54" r="1.5" fill={CAT_HIGHLIGHT} />
+          <path d="M58 64 l2 2 2 -2" stroke={CAT_EYE} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M56 69 q4 3 8 0" stroke={CAT_EYE} strokeWidth="1.6" fill="none" strokeLinecap="round" />
         </>
       )}
     </svg>

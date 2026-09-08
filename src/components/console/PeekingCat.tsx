@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { acquireCat, releaseCat } from "./catActivity";
+import { CAT_EAR_INNER, CAT_EYE, CAT_FUR, CAT_FUR_DARK, CAT_HIGHLIGHT } from "./catPalette";
 
 type Position = "top-left" | "top-right" | "bottom-left" | "bottom-right" | "left" | "right";
 
@@ -22,35 +23,40 @@ export function CatSilhouette({ dizzy = false }: { dizzy?: boolean } = {}) {
   return (
     <svg width="60" height="84" viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">
       {/* tail */}
-      <path d="M56 82 C72 78 74 58 62 46" stroke="var(--amber-dim)" strokeWidth="8" strokeLinecap="round" fill="none" />
-      <path d="M56 82 C72 78 74 58 62 46" stroke="#0d0f12" strokeWidth="6.4" strokeLinecap="round" fill="none" />
+      <path d="M56 82 C72 78 74 58 62 46" stroke={CAT_FUR} strokeWidth="8" strokeLinecap="round" fill="none" />
       {/* body */}
-      <ellipse cx="35" cy="78" rx="20" ry="22" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
+      <ellipse cx="35" cy="78" rx="20" ry="22" fill={CAT_FUR} />
+      {/* belly shading */}
+      <ellipse cx="35" cy="86" rx="13" ry="10" fill={CAT_FUR_DARK} opacity="0.5" />
       {/* paws */}
-      <ellipse cx="24" cy="97" rx="7" ry="6" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
-      <ellipse cx="46" cy="97" rx="7" ry="6" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
+      <ellipse cx="24" cy="97" rx="7" ry="6" fill={CAT_FUR} />
+      <ellipse cx="46" cy="97" rx="7" ry="6" fill={CAT_FUR} />
       {/* ears */}
-      <polygon points="14,26 30,26 20,4" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
-      <polygon points="56,26 40,26 50,4" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.6" />
+      <polygon points="14,26 30,26 20,4" fill={CAT_FUR} />
+      <polygon points="17,23 27,23 20,10" fill={CAT_EAR_INNER} />
+      <polygon points="56,26 40,26 50,4" fill={CAT_FUR} />
+      <polygon points="53,23 43,23 50,10" fill={CAT_EAR_INNER} />
       {/* head */}
       <path
         d="M12 22 H58 V38 C58 50 48 58 35 58 C22 58 12 50 12 38 Z"
-        fill="#0d0f12"
-        stroke="var(--amber-dim)"
-        strokeWidth="0.6"
+        fill={CAT_FUR}
       />
       {/* eyes */}
       {dizzy ? (
         <>
-          <path d="M20 37l8 6M28 37l-8 6" stroke="var(--amber)" strokeWidth="1.8" strokeLinecap="round" />
-          <path d="M42 37l8 6M50 37l-8 6" stroke="var(--amber)" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M20 37l8 6M28 37l-8 6" stroke={CAT_EYE} strokeWidth="2" strokeLinecap="round" />
+          <path d="M42 37l8 6M50 37l-8 6" stroke={CAT_EYE} strokeWidth="2" strokeLinecap="round" />
         </>
       ) : (
         <>
-          <circle cx="24" cy="40" r="4" fill="var(--amber)" />
-          <circle cx="46" cy="40" r="4" fill="var(--amber)" />
+          <circle cx="24" cy="40" r="4.2" fill={CAT_EYE} />
+          <circle cx="22.6" cy="38.6" r="1.2" fill={CAT_HIGHLIGHT} />
+          <circle cx="46" cy="40" r="4.2" fill={CAT_EYE} />
+          <circle cx="44.6" cy="38.6" r="1.2" fill={CAT_HIGHLIGHT} />
         </>
       )}
+      {/* nose */}
+      <path d="M32 47 l3 2 -3 2 z" fill={CAT_EAR_INNER} />
     </svg>
   );
 }
