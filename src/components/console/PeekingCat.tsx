@@ -112,6 +112,11 @@ export default function PeekingCat() {
   const [position, setPosition] = useState<Position>("top-right");
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const showTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const visibleRef = useRef(false);
+
+  useEffect(() => {
+    visibleRef.current = visible;
+  }, [visible]);
 
   const scheduleNext = useCallback(() => {
     const delay = 10_000 + Math.random() * 15_000;
@@ -158,10 +163,17 @@ export default function PeekingCat() {
 
     scheduleNext();
     window.addEventListener("cat:summon", summonNow);
+
+    function handleDismiss() {
+      if (visibleRef.current) retreat();
+    }
+    window.addEventListener("cat:dismiss-peeking", handleDismiss);
+
     return () => {
       clearTimeout(showTimer.current);
       clearTimeout(hideTimer.current);
       window.removeEventListener("cat:summon", summonNow);
+      window.removeEventListener("cat:dismiss-peeking", handleDismiss);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

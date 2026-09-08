@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { acquireCat, releaseCat } from "./catActivity";
+import { releaseCat, requestCatSlot } from "./catActivity";
 
 type Mood = "neutral" | "happy" | "sad";
 type Phase = "idle" | "sitting" | "jumping" | "leaving";
@@ -13,48 +13,53 @@ const SPIN_THRESHOLD_RAD = Math.PI * 2; // one full revolution around the cat
 function SittingCatFace({ mood }: { mood: Mood }) {
   return (
     <svg width="104" height="104" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      {/* tail, curled to the side */}
+      {/* tail, curled in close and fluffy */}
       <path
-        d="M84 92 C104 90 108 70 96 58"
+        d="M86 94 C102 90 102 72 90 64 C96 74 94 86 80 92"
+        fill="#0d0f12"
         stroke="var(--amber-dim)"
-        strokeWidth="7"
-        strokeLinecap="round"
-        fill="none"
+        strokeWidth="0.8"
       />
-      {/* body */}
-      <ellipse cx="60" cy="86" rx="36" ry="26" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      {/* front paws */}
-      <ellipse cx="46" cy="108" rx="8" ry="7" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <ellipse cx="72" cy="108" rx="8" ry="7" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      {/* ears, with inner shading */}
-      <polygon points="30,40 46,40 34,16" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <polygon points="33,36 42,36 35,23" fill="var(--amber-dim)" opacity="0.35" />
-      <polygon points="90,40 74,40 86,16" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
-      <polygon points="87,36 78,36 85,23" fill="var(--amber-dim)" opacity="0.35" />
-      {/* head */}
-      <circle cx="60" cy="54" r="30" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      {/* body, chubby "loaf" shape */}
+      <ellipse cx="60" cy="90" rx="34" ry="22" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      {/* front paws, tucked in close */}
+      <ellipse cx="48" cy="108" rx="9" ry="7.5" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <ellipse cx="70" cy="108" rx="9" ry="7.5" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      {/* ears, small and rounded */}
+      <path d="M30 38 Q28 18 40 12 Q46 22 42 40 Z" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <path d="M34 34 Q34 22 40 18 Q42 26 40 35 Z" fill="var(--amber-dim)" opacity="0.35" />
+      <path d="M90 38 Q92 18 80 12 Q74 22 78 40 Z" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
+      <path d="M86 34 Q86 22 80 18 Q78 26 80 35 Z" fill="var(--amber-dim)" opacity="0.35" />
+      {/* head, big and round for a cuter look */}
+      <circle cx="60" cy="56" r="34" fill="#0d0f12" stroke="var(--amber-dim)" strokeWidth="0.8" />
       {/* whiskers */}
-      <path d="M32 56 h-14M32 60 h-14M32 64 h-13" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
-      <path d="M88 56 h14M88 60 h14M88 64 h13" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
+      <path d="M30 58 h-13M30 62 h-14M31 66 h-12" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
+      <path d="M90 58 h13M90 62 h14M89 66 h12" stroke="var(--amber-dim)" strokeWidth="0.8" strokeLinecap="round" />
+      {/* blush */}
+      <circle cx="40" cy="66" r="5" fill="var(--red)" opacity="0.25" />
+      <circle cx="80" cy="66" r="5" fill="var(--red)" opacity="0.25" />
 
       {mood === "happy" ? (
         <>
-          <path d="M44 53 q6 6 12 0" stroke="var(--amber)" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M64 53 q6 6 12 0" stroke="var(--amber)" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M52 65 q8 7 16 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-          <path d="M60 18 l3.5 7 7 1 -5 4.5 1 7 -6.5 -3.5 -6.5 3.5 1 -7 -5 -4.5 7 -1 z" fill="var(--red)" opacity="0.85" />
+          <path d="M42 56 q7 7 14 0" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M64 56 q7 7 14 0" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M53 68 q7 6 14 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          <path d="M60 8 l3.5 7 7 1 -5 4.5 1 7 -6.5 -3.5 -6.5 3.5 1 -7 -5 -4.5 7 -1 z" fill="var(--red)" opacity="0.85" />
         </>
       ) : mood === "sad" ? (
         <>
-          <path d="M45 55 q6 -6 11 -1" stroke="var(--amber)" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M64 54 q6 -6 11 -1" stroke="var(--amber)" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-          <path d="M51 70 q9 -6 17 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          <path d="M43 58 q7 -6 12 -1" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M65 57 q7 -6 12 -1" stroke="var(--amber)" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+          <path d="M52 74 q8 -5 16 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
         </>
       ) : (
         <>
-          <circle cx="49" cy="54" r="3.6" fill="var(--amber)" />
-          <circle cx="71" cy="54" r="3.6" fill="var(--amber)" />
-          <path d="M55 66 q5 4 10 0" stroke="var(--amber)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+          <circle cx="47" cy="56" r="5.2" fill="var(--amber)" />
+          <circle cx="45.5" cy="54" r="1.5" fill="#0d0f12" />
+          <circle cx="73" cy="56" r="5.2" fill="var(--amber)" />
+          <circle cx="71.5" cy="54" r="1.5" fill="#0d0f12" />
+          <path d="M58 64 l2 2 2 -2" stroke="var(--amber)" strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M56 69 q4 3 8 0" stroke="var(--amber)" strokeWidth="1.6" fill="none" strokeLinecap="round" />
         </>
       )}
     </svg>
@@ -119,18 +124,19 @@ export default function PettableCat() {
   useEffect(() => {
     function trigger() {
       if (phase !== "idle") return;
-      if (!acquireCat()) return; // another cat easter egg is already out
-      resolvedRef.current = false;
-      cumulativeAngle.current = 0;
-      lastAngle.current = null;
-      setMood("neutral");
-      setPhase("sitting");
-      timeoutRef.current = setTimeout(() => {
-        if (resolvedRef.current) return;
-        resolvedRef.current = true;
-        setMood("sad");
-        leave();
-      }, PET_TIMEOUT_MS);
+      requestCatSlot(() => {
+        resolvedRef.current = false;
+        cumulativeAngle.current = 0;
+        lastAngle.current = null;
+        setMood("neutral");
+        setPhase("sitting");
+        timeoutRef.current = setTimeout(() => {
+          if (resolvedRef.current) return;
+          resolvedRef.current = true;
+          setMood("sad");
+          leave();
+        }, PET_TIMEOUT_MS);
+      });
     }
     window.addEventListener("cat:pet", trigger);
     return () => window.removeEventListener("cat:pet", trigger);

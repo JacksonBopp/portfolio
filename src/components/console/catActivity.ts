@@ -18,3 +18,23 @@ export function acquireCat(): boolean {
 export function releaseCat(): void {
   active = false;
 }
+
+/**
+ * Tries to claim the cat slot. If it's taken, asks the ambient peeking cat
+ * (the only easily-interruptible one) to step aside and retries once after
+ * it has had time to retreat. If something else entirely (feed, chase,
+ * knockdown, pettable) is what's holding the slot, this just gives up
+ * quietly rather than interrupting a deliberate in-progress animation.
+ */
+export function requestCatSlot(onGranted: () => void, retryDelayMs = 550): void {
+  if (acquireCat()) {
+    onGranted();
+    return;
+  }
+  window.dispatchEvent(new Event("cat:dismiss-peeking"));
+  setTimeout(() => {
+    if (acquireCat()) {
+      onGranted();
+    }
+  }, retryDelayMs);
+}
