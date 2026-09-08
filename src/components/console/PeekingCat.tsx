@@ -17,7 +17,7 @@ const CAT_HALF = 30;
 const EDGE_OFFSET = 24;
 const PROXIMITY_RADIUS = 150;
 
-function CatSilhouette() {
+export function CatSilhouette() {
   return (
     <svg width="60" height="84" viewBox="0 0 70 100" xmlns="http://www.w3.org/2000/svg">
       {/* tail */}
@@ -102,6 +102,12 @@ export default function PeekingCat() {
   const [position, setPosition] = useState<Position>("top-right");
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const showTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // Lets other cat-related easter eggs (e.g. the Core Focus knockdown gag)
+  // know when this ambient cat is already out, so they don't overlap it.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("cat:visibility", { detail: { visible } }));
+  }, [visible]);
 
   const scheduleNext = useCallback(() => {
     const delay = 10_000 + Math.random() * 15_000;

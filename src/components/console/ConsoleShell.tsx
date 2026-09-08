@@ -11,6 +11,7 @@ import ModeSelect from "./ModeSelect";
 import StatusStrip from "./StatusStrip";
 import CommandPalette from "./CommandPalette";
 import PeekingCat from "./PeekingCat";
+import CatKnockdown from "./CatKnockdown";
 import MouseChase from "./MouseChase";
 import SoundToggle from "./SoundToggle";
 import { playBlip } from "./sound";
@@ -206,6 +207,7 @@ export default function ConsoleShell() {
       />
 
       <PeekingCat />
+      <CatKnockdown />
       <MouseChase />
     </div>
   );

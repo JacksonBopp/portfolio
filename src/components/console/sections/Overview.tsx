@@ -104,6 +104,7 @@ export default function Overview({ mode, onSelectProject }: OverviewProps) {
           {coreFocusAreas.map((name) => (
             <span
               key={name}
+              data-skill-chip={name}
               className="rounded border border-[var(--amber-dim)] bg-[var(--amber)]/5 px-2.5 py-1 font-mono-tech text-xs text-[var(--amber)]"
             >
               {name}
