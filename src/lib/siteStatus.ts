@@ -1,7 +1,5 @@
 import "server-only";
-import { neon } from "@neondatabase/serverless";
-
-const sql = neon(process.env.DATABASE_URL!);
+import { sql } from "./db";
 
 const FALLBACK_STATUS = "Final semester at USF, Smart City Student Volunteer at City of Winter Haven";
 

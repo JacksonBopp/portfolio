@@ -1,8 +1,6 @@
 import "server-only";
-import { neon } from "@neondatabase/serverless";
+import { sql } from "./db";
 import { Resend } from "resend";
-
-const sql = neon(process.env.DATABASE_URL!);
 
 export type GateAttempt = {
   id: number;
