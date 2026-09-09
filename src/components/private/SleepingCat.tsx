@@ -25,54 +25,75 @@ function SleepingCatSvg() {
   const ear = "#c99283";
 
   return (
-    <svg width="120" height="70" viewBox="0 0 140 80" xmlns="http://www.w3.org/2000/svg">
+    <svg width="140" height="78" viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
       {/* bed */}
-      <ellipse cx="70" cy="66" rx="66" ry="12" fill="none" stroke="var(--hairline-strong)" strokeWidth="2" />
-      {/* tail, curled around the body, with a few tabby rings */}
-      <path
-        d="M110 58 C126 54 126 38 112 34"
-        stroke={fur}
-        strokeWidth="7"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path d="M113 56 l4 -3M116 49 l4.5 -2M116 42 l4.5 -1" stroke={stripe} strokeWidth="1.4" strokeLinecap="round" />
-      {/* body, lying down */}
-      <ellipse cx="70" cy="50" rx="46" ry="20" fill={fur} stroke={furDark} strokeWidth="0.8" />
-      {/* body stripes */}
-      <path d="M46 34 q4 8 0 16" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M58 32 q5 10 0 20" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M70 31 q5 11 0 22" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
-      <path d="M82 33 q5 10 0 20" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
-      {/* ears, pink inner */}
-      <polygon points="24,34 36,34 28,20" fill={fur} stroke={furDark} strokeWidth="0.8" />
-      <polygon points="26,32 33,32 28.5,24" fill={ear} />
-      <polygon points="44,32 56,32 52,18" fill={fur} stroke={furDark} strokeWidth="0.8" />
-      <polygon points="46,30 53,30 49.5,22" fill={ear} />
-      {/* head */}
-      <ellipse cx="38" cy="44" rx="18" ry="15" fill={fur} stroke={furDark} strokeWidth="0.8" />
+      <ellipse cx="80" cy="78" rx="76" ry="10" fill="none" stroke="var(--hairline-strong)" strokeWidth="2" />
+
+      {/* body, one continuous curled silhouette (fill only, no stroke, so it
+          reads as a single curled shape rather than glued-together pieces) */}
+      <ellipse cx="90" cy="50" rx="50" ry="23" fill={fur} />
+      <ellipse cx="94" cy="60" rx="32" ry="10" fill={furDark} opacity="0.3" />
+
+      {/* body stripes, spread across the whole back following its curve */}
+      <path d="M56 36 q4 7 0 15" stroke={stripe} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M68 31 q5 11 0 23" stroke={stripe} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M80 28 q5 13 0 26" stroke={stripe} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M92 27 q5 13 0 27" stroke={stripe} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M104 29 q5 12 0 24" stroke={stripe} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+      <path d="M116 34 q4 9 0 19" stroke={stripe} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M126 40 q3 6 0 13" stroke={stripe} strokeWidth="1.8" fill="none" strokeLinecap="round" />
+
+      {/* head, overlapping the body generously so no seam shows */}
+      <ellipse cx="40" cy="44" rx="20" ry="17" fill={fur} />
+
+      {/* ears, simple triangles tilted slightly outward for a relaxed,
+          laid-back sleeping look rather than upright and alert */}
+      <polygon points="24,32 35,32 27,15" fill={fur} />
+      <polygon points="26,29 33,29 28,20" fill={ear} />
+      <polygon points="43,30 54,30 51,12" fill={fur} />
+      <polygon points="45,27 52,27 49.5,18" fill={ear} />
+
       {/* forehead "M" tabby marking */}
       <path
-        d="M30 33 l2 5 -2 4 M36 31 l0 5 M42 33 l-2 5 2 4"
+        d="M28 32 L32 38 L36 32 L40 38 L44 32"
         stroke={stripe}
-        strokeWidth="1.3"
+        strokeWidth="1.5"
         fill="none"
         strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      {/* cheek stripes */}
-      <path d="M22 46 l6 1M22 50 l6 0" stroke={stripe} strokeWidth="1.2" strokeLinecap="round" />
-      <path d="M54 46 l-6 1M54 50 l-6 0" stroke={stripe} strokeWidth="1.2" strokeLinecap="round" />
-      {/* closed eyes, greenish like the real thing */}
-      <path d="M30 44 q4 3 8 0" stroke="#7a9463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M42 44 q4 3 8 0" stroke="#7a9463" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      {/* whiskers */}
+      <path d="M18 45 h-11M18 49 h-12M19 53 h-10" stroke={furDark} strokeWidth="0.8" strokeLinecap="round" />
+
+      {/* closed, sleepy eyes, greenish like the real thing */}
+      <path d="M27 44 q5 4 10 0.5" stroke="#7a9463" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      <path d="M41 44.5 q5 4 10 0.5" stroke="#7a9463" strokeWidth="1.7" fill="none" strokeLinecap="round" />
+      {/* nose */}
+      <path d="M36 52 l4 0 -2 2.5 z" fill={ear} />
+
+      {/* front paws, tucked in front of the chest */}
+      <ellipse cx="56" cy="66" rx="10" ry="7" fill={fur} />
+      <ellipse cx="72" cy="68" rx="10" ry="7" fill={fur} />
+
+      {/* tail, curled from the haunch around over the front paws, drawn last
+          so it visibly rests on top instead of hiding behind the body */}
+      <path
+        d="M124 56 C 122 70 100 80 72 78 C 64 77 58 74 54 67"
+        stroke={furDark}
+        strokeWidth="11"
+        strokeLinecap="round"
+        fill="none"
+      />
+      <path d="M112 68 l2 5M88 79 l0 5.5M65 76 l-2 5" stroke={stripe} strokeWidth="2.2" strokeLinecap="round" />
+
       {/* zzz */}
-      <text x="86" y="24" fill="var(--fg-dim)" fontSize="10" fontFamily="var(--font-kalam)">
+      <text x="94" y="26" fill="var(--fg-dim)" fontSize="10" fontFamily="var(--font-kalam)">
         z
       </text>
-      <text x="94" y="16" fill="var(--fg-dim)" fontSize="13" fontFamily="var(--font-kalam)">
+      <text x="103" y="17" fill="var(--fg-dim)" fontSize="13" fontFamily="var(--font-kalam)">
         z
       </text>
-      <text x="104" y="7" fill="var(--fg-dim)" fontSize="16" fontFamily="var(--font-kalam)">
+      <text x="114" y="6" fill="var(--fg-dim)" fontSize="16" fontFamily="var(--font-kalam)">
         z
       </text>
     </svg>
