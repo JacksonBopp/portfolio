@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Cinzel, Geist, IM_Fell_English } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { profile } from "@/data/profile";
 import "./globals.css";
 
@@ -8,22 +9,16 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
-const imFellEnglish = IM_Fell_English({
-  variable: "--font-fell",
-  weight: "400",
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
-
-const title = `${profile.name} — ${profile.tagline}`;
+const title = `${profile.name}: ${profile.tagline}`;
 const description = `${profile.subtagline}. Portfolio of ${profile.name}, a ${profile.tagline} student working across embedded systems, full-stack web, and AI.`;
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://jacksonbopp.vercel.app"),
   title,
   description,
   openGraph: {
@@ -32,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title,
     description,
   },
@@ -46,10 +41,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${cinzel.variable} ${imFellEnglish.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="relative z-0 flex min-h-full flex-col">
         <div className="relative z-10 flex flex-1 flex-col">{children}</div>
+        <Analytics />
       </body>
     </html>
   );
