@@ -24,7 +24,7 @@ export const projects: Project[] = [
       "Streams live telemetry from four different microcontrollers to a web dashboard, with AI-powered analysis when a test run fails and a CI pipeline that validates every board in simulation.",
     highlights: [
       "Reference firmware for the MSP430FR2355, ESP32, STM32F103C8, and RP2040 all emit the same JSON-over-UART frame format, so any of the four boards works with the same Raspberry Pi bridge, MQTT pipeline, and Next.js dashboard with real-time SSE updates",
-      "IBM watsonx.ai (Granite 3-8B) analyzes failed runs; a Gemini-powered chat assistant answers wiring and firmware questions from the same dashboard",
+      "IBM watsonx.ai (Granite 3-8B) analyzes failed runs; a watsonx-powered chat assistant answers wiring and firmware questions from the same dashboard",
       "A capture-and-replay tool and hardware simulator let the full test suite run without physical hardware attached, backed by a GitHub Actions workflow that spins up Postgres and Mosquitto and runs an end-to-end simulated-hardware regression test on every push",
       "Schema-validated frame parsing and a cross-platform test suite check that all four firmware builds produce frames the backend accepts",
     ],
